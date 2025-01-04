@@ -1,5 +1,5 @@
 package com.artcorb.bitbunker.services;
 
-public interface IOrderService {
+public interface OrderService {
 
 }
