@@ -1,4 +1,4 @@
-package com.artcorb.bitbunker.models.bases;
+package com.artcorb.bitbunker.models.base;
 
 import java.time.LocalDateTime;
 import org.springframework.data.annotation.CreatedBy;
