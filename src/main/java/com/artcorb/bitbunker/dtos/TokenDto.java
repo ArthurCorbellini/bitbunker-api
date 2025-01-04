@@ -11,6 +11,7 @@ public class TokenDto {
 
   @Schema(description = "Token UCID", example = "1")
   @NotEmpty(message = "UCID can not be a null or empty")
+  @Size(min = 1, max = 10, message = "The length of the token UCID should be between 1 and 10")
   private long ucid;
 
   @Schema(description = "Token name", example = "Bitcoin")
