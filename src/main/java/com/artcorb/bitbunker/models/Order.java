@@ -2,7 +2,7 @@ package com.artcorb.bitbunker.models;
 
 import java.math.BigDecimal;
 import com.artcorb.bitbunker.enums.OrderType;
-import com.artcorb.bitbunker.models.bases.BaseEntity;
+import com.artcorb.bitbunker.models.base.BaseEntity;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,7 +1,7 @@
 package com.artcorb.bitbunker.models;
 
 import com.artcorb.bitbunker.enums.TokenRank;
-import com.artcorb.bitbunker.models.bases.BaseEntity;
+import com.artcorb.bitbunker.models.base.BaseEntity;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
