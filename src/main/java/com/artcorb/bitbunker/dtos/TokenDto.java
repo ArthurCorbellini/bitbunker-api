@@ -27,6 +27,6 @@ public class TokenDto {
   @Schema(description = "Token rank", example = "TIER_S",
       allowableValues = {"TIER_S", "TIER_A", "TIER_B", "TIER_C", "TIER_D", "TIER_E", "NO_TIER"})
   @NotEmpty(message = "Rank can not be a null or empty")
-  private String rank;
+  private String classification;
 
 }

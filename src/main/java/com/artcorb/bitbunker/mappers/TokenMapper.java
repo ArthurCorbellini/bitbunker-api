@@ -11,7 +11,7 @@ public class TokenMapper {
     target.setUcid(source.getUcid());
     target.setName(source.getName());
     target.setSymbol(source.getSymbol());
-    target.setRank(TokenRank.valueOf(source.getRank()));
+    target.setClassification(TokenRank.valueOf(source.getClassification()));
     return target;
   }
 
@@ -20,7 +20,7 @@ public class TokenMapper {
     target.setUcid(source.getUcid());
     target.setName(source.getName());
     target.setSymbol(source.getSymbol());
-    target.setRank(source.getRank().toString());
+    target.setClassification(source.getClassification().toString());
     return target;
   }
 
