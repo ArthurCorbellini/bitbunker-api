@@ -1,10 +1,12 @@
 package com.artcorb.bitbunker.controllers;
 
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,10 +40,19 @@ public class TokenController extends BaseController {
   @ApiResponses({@ApiResponse(responseCode = STATUS_201, description = MESSAGE_201),
       @ApiResponse(responseCode = STATUS_500, description = MESSAGE_500,
           content = @Content(schema = @Schema(implementation = ResponseErrorDto.class)))})
-  @PostMapping("/create")
-  public ResponseEntity<ResponseDto> createToken(@Valid @RequestBody TokenDto dto) {
+  @PostMapping
+  public ResponseEntity<ResponseDto> create(@Valid @RequestBody TokenDto dto) {
     tokenService.create(dto);
     return ResponseEntity.status(HttpStatus.CREATED).body(RESPONSE_201);
+  }
+
+  @Operation(summary = "Fetch all tokens REST API", description = "REST API to fetch all tokens")
+  @ApiResponses({@ApiResponse(responseCode = STATUS_200, description = MESSAGE_200),
+      @ApiResponse(responseCode = STATUS_500, description = MESSAGE_500,
+          content = @Content(schema = @Schema(implementation = ResponseErrorDto.class)))})
+  @GetMapping
+  public ResponseEntity<List<TokenDto>> fetchAll() {
+    return ResponseEntity.status(HttpStatus.OK).body(tokenService.findAll());
   }
 
   @Operation(summary = "Delete Token REST API",
@@ -50,8 +61,8 @@ public class TokenController extends BaseController {
       @ApiResponse(responseCode = STATUS_417, description = MESSAGE_417_DELETE),
       @ApiResponse(responseCode = STATUS_500, description = MESSAGE_500,
           content = @Content(schema = @Schema(implementation = ResponseErrorDto.class)))})
-  @DeleteMapping("/delete")
-  public ResponseEntity<ResponseDto> deleteToken(@RequestParam @Pattern(regexp = "^\\d{1,10}$",
+  @DeleteMapping
+  public ResponseEntity<ResponseDto> delete(@RequestParam @Pattern(regexp = "^\\d{1,10}$",
       message = "UCID must have 1 to 10 digits") long ucid) {
     tokenService.delete(ucid);
     return ResponseEntity.status(HttpStatus.OK).body(RESPONSE_200);

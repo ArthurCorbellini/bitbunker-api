@@ -1,5 +1,6 @@
 package com.artcorb.bitbunker.services.impl;
 
+import java.util.List;
 import org.springframework.stereotype.Service;
 import com.artcorb.bitbunker.dtos.TokenDto;
 import com.artcorb.bitbunker.exceptions.ResourceAlreadyExistsException;
@@ -26,6 +27,11 @@ public class TokenServiceImpl implements TokenService {
   public void delete(long ucid) {
     tokenRepository.delete(tokenRepository.findByUcid(ucid)
         .orElseThrow(() -> new ResourceNotFoundException("Token", "UCID", String.valueOf(ucid))));
+  }
+
+  @Override
+  public List<TokenDto> findAll() {
+    return TokenMapper.toTokenDto(tokenRepository.findAll());
   }
 
 }

@@ -1,5 +1,7 @@
 package com.artcorb.bitbunker.mappers;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import com.artcorb.bitbunker.dtos.TokenDto;
 import com.artcorb.bitbunker.enums.TokenRank;
 import com.artcorb.bitbunker.models.Token;
@@ -22,6 +24,10 @@ public class TokenMapper {
     target.setSymbol(source.getSymbol());
     target.setClassification(source.getClassification().toString());
     return target;
+  }
+
+  public static List<TokenDto> toTokenDto(List<Token> source) {
+    return source.stream().map(p -> toTokenDto(p)).collect(Collectors.toList());
   }
 
 }
