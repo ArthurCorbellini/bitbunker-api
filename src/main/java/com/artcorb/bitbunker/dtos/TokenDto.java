@@ -2,6 +2,8 @@ package com.artcorb.bitbunker.dtos;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
@@ -10,9 +12,9 @@ import lombok.Data;
 public class TokenDto {
 
   @Schema(description = "Token UCID", example = "1")
-  @NotEmpty(message = "UCID can not be a null or empty")
-  @Size(min = 1, max = 10, message = "The length of the token UCID should be between 1 and 10")
-  private long ucid;
+  @NotNull(message = "UCID can not be a null")
+  @Positive(message = "UCID must be a positive number")
+  private Long ucid;
 
   @Schema(description = "Token name", example = "Bitcoin")
   @NotEmpty(message = "Name can not be a null or empty")
