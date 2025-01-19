@@ -37,7 +37,11 @@ public class TokenController extends BaseController {
   private TokenService tokenService;
 
   @Operation(summary = "Create token REST API", description = "REST API to create new token")
-  @ApiResponses({@ApiResponse(responseCode = STATUS_201, description = MESSAGE_201),
+  @ApiResponses({
+      @ApiResponse(responseCode = STATUS_201, description = MESSAGE_201,
+          content = @Content(schema = @Schema(implementation = ResponseDto.class))),
+      @ApiResponse(responseCode = STATUS_400, description = MESSAGE_400,
+          content = @Content(schema = @Schema(implementation = ResponseErrorDto.class))),
       @ApiResponse(responseCode = STATUS_500, description = MESSAGE_500,
           content = @Content(schema = @Schema(implementation = ResponseErrorDto.class)))})
   @PostMapping
@@ -57,8 +61,11 @@ public class TokenController extends BaseController {
 
   @Operation(summary = "Delete Token REST API",
       description = "REST API to delete Token based on the UCID")
-  @ApiResponses({@ApiResponse(responseCode = STATUS_200, description = MESSAGE_200),
-      @ApiResponse(responseCode = STATUS_417, description = MESSAGE_417_DELETE),
+  @ApiResponses({
+      @ApiResponse(responseCode = STATUS_200, description = MESSAGE_200,
+          content = @Content(schema = @Schema(implementation = ResponseDto.class))),
+      @ApiResponse(responseCode = STATUS_417, description = MESSAGE_417,
+          content = @Content(schema = @Schema(implementation = ResponseErrorDto.class))),
       @ApiResponse(responseCode = STATUS_500, description = MESSAGE_500,
           content = @Content(schema = @Schema(implementation = ResponseErrorDto.class)))})
   @DeleteMapping

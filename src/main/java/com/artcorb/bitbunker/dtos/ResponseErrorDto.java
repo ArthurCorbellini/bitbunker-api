@@ -14,12 +14,12 @@ public class ResponseErrorDto {
   @Schema(description = "API path called by client", example = "/path/example")
   private String apiPath;
 
-  @Schema(description = "Error code representing the error happened", example = "500")
+  @Schema(description = "Error code representing the error happened", example = "999")
   private HttpStatus errorCode;
 
   @Schema(description = "Error message representing the error happened",
       example = "An error occurred. Please try again or contact Dev team")
-  private String errorMessage;
+  private Object errorMessage;
 
   @Schema(description = "Time when the error happened")
   private LocalDateTime errorTime;
