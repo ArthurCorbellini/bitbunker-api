@@ -3,6 +3,7 @@ package com.artcorb.bitbunker.dtos;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -29,6 +30,8 @@ public class TokenDto {
   @Schema(description = "Token rank", example = "TIER_S",
       allowableValues = {"TIER_S", "TIER_A", "TIER_B", "TIER_C", "TIER_D", "TIER_E", "NO_TIER"})
   @NotEmpty(message = "Rank can not be a null or empty")
+  @Pattern(regexp = "TIER_S|TIER_A|TIER_B|TIER_C|TIER_D|TIER_E|NO_TIER",
+      message = "Invalid classification.")
   private String classification;
 
 }
