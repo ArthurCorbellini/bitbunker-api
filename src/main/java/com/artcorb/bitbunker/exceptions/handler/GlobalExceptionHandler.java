@@ -1,6 +1,5 @@
 package com.artcorb.bitbunker.exceptions.handler;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,12 +14,18 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import com.artcorb.bitbunker.dtos.ResponseErrorDto;
+import com.artcorb.bitbunker.dtos.ResponseDto;
+import com.artcorb.bitbunker.enums.ResponseError;
 import com.artcorb.bitbunker.exceptions.ResourceAlreadyExistsException;
 import com.artcorb.bitbunker.exceptions.ResourceNotFoundException;
+import jakarta.validation.ConstraintViolationException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+
+  private String getApiPath(WebRequest webRequest) {
+    return webRequest.getDescription(false).replace("uri=", "");
+  }
 
   /**
    * Handle all jakarta.validation errors
@@ -37,37 +42,47 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
       validationErrors.computeIfAbsent(fieldName, k -> new ArrayList<>()).add(validationMsg);
     });
 
-    ResponseErrorDto dto = new ResponseErrorDto(webRequest.getDescription(false),
-        HttpStatus.BAD_REQUEST, validationErrors, LocalDateTime.now());
+    ResponseDto dto = new ResponseDto(getApiPath(webRequest));
+    dto.buildError(ResponseError.VALIDATION_ERROR, validationErrors);
 
     return new ResponseEntity<>(dto, HttpStatus.BAD_REQUEST);
   }
 
   @ExceptionHandler(Exception.class)
-  public ResponseEntity<ResponseErrorDto> handleGlobalException(Exception exception,
+  public ResponseEntity<ResponseDto> handleGlobalException(Exception exception,
       WebRequest webRequest) {
+    ResponseDto dto = new ResponseDto(getApiPath(webRequest));
+
+    // Os erros de validação do @RequestParam não são coletados pelo "handleMethodArgumentNotValid";
+    // >> Caso de testes: DELETE em /token, passando um número negativo;
+    if (exception instanceof ConstraintViolationException) {
+      dto.buildError(ResponseError.VALIDATION_ERROR, exception.getMessage());
+      return new ResponseEntity<>(dto, HttpStatus.BAD_REQUEST);
+    }
 
     // TODO send e-mail to dev team or save the error and its information in database Audit table;
 
-    ResponseErrorDto dto = new ResponseErrorDto(webRequest.getDescription(false),
-        HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage(), LocalDateTime.now());
-
+    dto.buildError(ResponseError.INTERNAL_SERVER_ERROR, exception.getMessage());
     return new ResponseEntity<>(dto, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
   @ExceptionHandler(ResourceAlreadyExistsException.class)
-  public ResponseEntity<ResponseErrorDto> handleResourceAlreadyExistsException(
+  public ResponseEntity<ResponseDto> handleResourceAlreadyExistsException(
       ResourceAlreadyExistsException exception, WebRequest webRequest) {
-    ResponseErrorDto dto = new ResponseErrorDto(webRequest.getDescription(false),
-        HttpStatus.BAD_REQUEST, exception.getMessage(), LocalDateTime.now());
-    return new ResponseEntity<>(dto, HttpStatus.BAD_REQUEST);
+
+    ResponseDto dto = new ResponseDto(getApiPath(webRequest));
+    dto.buildError(ResponseError.ALREADY_EXISTS, exception.getMessage());
+
+    return new ResponseEntity<>(dto, HttpStatus.CONFLICT);
   }
 
   @ExceptionHandler(ResourceNotFoundException.class)
-  public ResponseEntity<ResponseErrorDto> handleResourceNotFoundException(
+  public ResponseEntity<ResponseDto> handleResourceNotFoundException(
       ResourceNotFoundException exception, WebRequest webRequest) {
-    ResponseErrorDto dto = new ResponseErrorDto(webRequest.getDescription(false),
-        HttpStatus.NOT_FOUND, exception.getMessage(), LocalDateTime.now());
+
+    ResponseDto dto = new ResponseDto(getApiPath(webRequest));
+    dto.buildError(ResponseError.NOT_FOUND, exception.getMessage());
+
     return new ResponseEntity<>(dto, HttpStatus.NOT_FOUND);
   }
 }

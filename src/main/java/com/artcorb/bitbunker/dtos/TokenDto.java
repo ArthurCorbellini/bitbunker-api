@@ -19,19 +19,19 @@ public class TokenDto {
 
   @Schema(description = "Token name", example = "Bitcoin")
   @NotEmpty(message = "Name can not be a null or empty")
-  @Size(min = 1, max = 30, message = "The length of the token name should be between 1 and 30")
+  @Size(max = 30, message = "The length of the token name should be less than 30")
   private String name;
 
   @Schema(description = "Token symbol", example = "BTC")
   @NotEmpty(message = "Symbol can not be a null or empty")
-  @Size(min = 1, max = 10, message = "The length of the token symbol should be between 1 and 10")
+  @Size(max = 10, message = "The length of the token symbol should be less than 10")
   private String symbol;
 
   @Schema(description = "Token rank", example = "TIER_S",
       allowableValues = {"TIER_S", "TIER_A", "TIER_B", "TIER_C", "TIER_D", "TIER_E", "NO_TIER"})
-  @NotEmpty(message = "Rank can not be a null or empty")
+  @NotEmpty(message = "Classification can not be a null or empty")
   @Pattern(regexp = "TIER_S|TIER_A|TIER_B|TIER_C|TIER_D|TIER_E|NO_TIER",
-      message = "Invalid classification.")
+      message = "Invalid classification - Allowed values: TIER_S|TIER_A|TIER_B|TIER_C|TIER_D|TIER_E|NO_TIER")
   private String classification;
 
 }

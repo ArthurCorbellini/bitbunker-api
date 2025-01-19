@@ -1,6 +1,5 @@
 package com.artcorb.bitbunker.controllers;
 
-import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.artcorb.bitbunker.controllers.base.BaseController;
 import com.artcorb.bitbunker.dtos.ResponseDto;
-import com.artcorb.bitbunker.dtos.ResponseErrorDto;
 import com.artcorb.bitbunker.dtos.TokenDto;
 import com.artcorb.bitbunker.services.TokenService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,8 +21,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 
 @Tag(name = "CRUD REST API for Tokens", description = "CREATE, READ, UPDATE and DELETE tokens")
@@ -36,43 +36,50 @@ public class TokenController extends BaseController {
 
   private TokenService tokenService;
 
-  @Operation(summary = "Create token REST API", description = "REST API to create new token")
+  @Operation(summary = "Fetch all tokens REST API", description = "REST API to fetch all tokens")
   @ApiResponses({
-      @ApiResponse(responseCode = STATUS_201, description = MESSAGE_201,
+      @ApiResponse(responseCode = "200",
           content = @Content(schema = @Schema(implementation = ResponseDto.class))),
-      @ApiResponse(responseCode = STATUS_400, description = MESSAGE_400,
-          content = @Content(schema = @Schema(implementation = ResponseErrorDto.class))),
-      @ApiResponse(responseCode = STATUS_500, description = MESSAGE_500,
-          content = @Content(schema = @Schema(implementation = ResponseErrorDto.class)))})
-  @PostMapping
-  public ResponseEntity<ResponseDto> create(@Valid @RequestBody TokenDto dto) {
-    tokenService.create(dto);
-    return ResponseEntity.status(HttpStatus.CREATED).body(RESPONSE_201);
+      @ApiResponse(responseCode = "500",
+          content = @Content(schema = @Schema(implementation = ResponseDto.class)))})
+  @GetMapping
+  public ResponseEntity<ResponseDto> fetchAll(HttpServletRequest request) {
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(buildResponse(request, tokenService.findAll()));
   }
 
-  @Operation(summary = "Fetch all tokens REST API", description = "REST API to fetch all tokens")
-  @ApiResponses({@ApiResponse(responseCode = STATUS_200, description = MESSAGE_200),
-      @ApiResponse(responseCode = STATUS_500, description = MESSAGE_500,
-          content = @Content(schema = @Schema(implementation = ResponseErrorDto.class)))})
-  @GetMapping
-  public ResponseEntity<List<TokenDto>> fetchAll() {
-    return ResponseEntity.status(HttpStatus.OK).body(tokenService.findAll());
+  @Operation(summary = "Create token REST API", description = "REST API to create new token")
+  @ApiResponses({
+      @ApiResponse(responseCode = "201",
+          content = @Content(schema = @Schema(implementation = ResponseDto.class))),
+      @ApiResponse(responseCode = "400",
+          content = @Content(schema = @Schema(implementation = ResponseDto.class))),
+      @ApiResponse(responseCode = "409",
+          content = @Content(schema = @Schema(implementation = ResponseDto.class))),
+      @ApiResponse(responseCode = "500",
+          content = @Content(schema = @Schema(implementation = ResponseDto.class)))})
+  @PostMapping
+  public ResponseEntity<ResponseDto> create(HttpServletRequest request,
+      @Valid @RequestBody TokenDto dto) {
+    tokenService.create(dto);
+    return ResponseEntity.status(HttpStatus.CREATED).body(buildResponse(request, MESSAGE_201));
   }
 
   @Operation(summary = "Delete Token REST API",
       description = "REST API to delete Token based on the UCID")
   @ApiResponses({
-      @ApiResponse(responseCode = STATUS_200, description = MESSAGE_200,
+      @ApiResponse(responseCode = "200",
           content = @Content(schema = @Schema(implementation = ResponseDto.class))),
-      @ApiResponse(responseCode = STATUS_417, description = MESSAGE_417,
-          content = @Content(schema = @Schema(implementation = ResponseErrorDto.class))),
-      @ApiResponse(responseCode = STATUS_500, description = MESSAGE_500,
-          content = @Content(schema = @Schema(implementation = ResponseErrorDto.class)))})
+      @ApiResponse(responseCode = "404",
+          content = @Content(schema = @Schema(implementation = ResponseDto.class))),
+      @ApiResponse(responseCode = "500",
+          content = @Content(schema = @Schema(implementation = ResponseDto.class)))})
   @DeleteMapping
-  public ResponseEntity<ResponseDto> delete(@RequestParam @Pattern(regexp = "^\\d{1,10}$",
-      message = "UCID must have 1 to 10 digits") long ucid) {
+  public ResponseEntity<ResponseDto> delete(HttpServletRequest request,
+      @Valid @RequestParam @NotNull(message = "UCID can not be a null") @Positive(
+          message = "UCID must be a positive number") long ucid) {
     tokenService.delete(ucid);
-    return ResponseEntity.status(HttpStatus.OK).body(RESPONSE_200);
+    return ResponseEntity.status(HttpStatus.OK).body(buildResponse(request, MESSAGE_200));
   }
 
 }
