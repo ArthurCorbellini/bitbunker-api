@@ -10,6 +10,9 @@ import lombok.Data;
 @Data
 public class ResponseDto {
 
+  @Schema(description = "Informs whether the request was made successfully", example = "true")
+  private boolean success;
+
   @Schema(description = "API path called by client", example = "/path/example")
   private String apiPath;
 
@@ -24,11 +27,13 @@ public class ResponseDto {
   private Object data;
 
   public ResponseDto(String apiPath) {
+    this.success = true;
     this.apiPath = apiPath;
     this.timestamp = LocalDateTime.now();
   }
 
   public void buildError(ResponseError error, Object detail) {
+    this.success = false;
     this.error = new ResponseErrorDto(error.toString(), error.getDescription(), detail);
   }
 
@@ -45,7 +50,6 @@ public class ResponseDto {
     @Schema(description = "Error details, if any",
         example = "Details about the error, if any (can be a Json object)")
     private Object details;
-
   }
 
 }
