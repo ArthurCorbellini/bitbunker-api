@@ -6,7 +6,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
 @Schema(name = "Order", description = "Schema to hold Order information")
@@ -14,13 +13,11 @@ import lombok.Data;
 public class OrderDto {
 
   @Schema(description = "Order ID", example = "1")
-  @NotNull(message = "ID can not be a null")
-  @Positive(message = "ID must be a positive number")
   private Long id;
 
-  @Schema(description = "Order token")
+  @Schema(description = "Order asset")
   @Valid
-  private TokenDto token;
+  private AssetDto asset;
 
   @Schema(description = "Order type", example = "BUY", allowableValues = {"BUY", "SELL"})
   @NotEmpty(message = "Type can not be a null or empty")

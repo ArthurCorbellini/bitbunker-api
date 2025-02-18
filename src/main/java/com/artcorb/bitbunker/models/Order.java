@@ -25,8 +25,8 @@ import lombok.ToString;
 public class Order extends BaseEntity {
 
   @ManyToOne
-  @JoinColumn(name = "token_id")
-  private Token token;
+  @JoinColumn(name = "asset_id")
+  private Asset asset;
 
   @Enumerated(EnumType.STRING)
   private OrderType type;

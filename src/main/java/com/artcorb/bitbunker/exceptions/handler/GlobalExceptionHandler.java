@@ -54,7 +54,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     ResponseDto dto = new ResponseDto(getApiPath(webRequest));
 
     // Os erros de validação do @RequestParam não são coletados pelo "handleMethodArgumentNotValid";
-    // >> Caso de testes: DELETE em /token, passando um número negativo;
+    // >> Caso de testes: DELETE em /asset, passando um número negativo;
     if (exception instanceof ConstraintViolationException) {
       dto.buildError(ResponseError.VALIDATION_ERROR, exception.getMessage());
       return new ResponseEntity<>(dto, HttpStatus.BAD_REQUEST);

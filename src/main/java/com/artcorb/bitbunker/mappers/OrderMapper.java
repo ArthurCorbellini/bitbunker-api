@@ -2,11 +2,11 @@ package com.artcorb.bitbunker.mappers;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import com.artcorb.bitbunker.dtos.AssetDto;
 import com.artcorb.bitbunker.dtos.OrderDto;
-import com.artcorb.bitbunker.dtos.TokenDto;
 import com.artcorb.bitbunker.enums.OrderType;
+import com.artcorb.bitbunker.models.Asset;
 import com.artcorb.bitbunker.models.Order;
-import com.artcorb.bitbunker.models.Token;
 
 public class OrderMapper {
 
@@ -18,8 +18,8 @@ public class OrderMapper {
     target.setFiatCurrencyMoved(source.getFiatCurrencyMoved());
     target.setNotes(source.getNotes());
 
-    Token token = TokenMapper.toToken(source.getToken());
-    target.setToken(token);
+    Asset asset = AssetMapper.toEntity(source.getAsset());
+    target.setAsset(asset);
 
     return target;
   }
@@ -32,8 +32,8 @@ public class OrderMapper {
     target.setFiatCurrencyMoved(source.getFiatCurrencyMoved());
     target.setNotes(source.getNotes());
 
-    TokenDto tokenDto = TokenMapper.toTokenDto(source.getToken());
-    target.setToken(tokenDto);
+    AssetDto assetDto = AssetMapper.toDto(source.getAsset());
+    target.setAsset(assetDto);
 
     return target;
   }

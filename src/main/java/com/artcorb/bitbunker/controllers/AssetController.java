@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.artcorb.bitbunker.controllers.base.BaseController;
+import com.artcorb.bitbunker.dtos.AssetDto;
 import com.artcorb.bitbunker.dtos.ResponseDto;
-import com.artcorb.bitbunker.dtos.TokenDto;
-import com.artcorb.bitbunker.services.TokenService;
+import com.artcorb.bitbunker.services.AssetService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -27,16 +27,16 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 
-@Tag(name = "CRUD REST API for Tokens", description = "CREATE, READ, UPDATE and DELETE tokens")
+@Tag(name = "CRUD REST API for Assets", description = "CREATE, READ, UPDATE and DELETE assets")
 @AllArgsConstructor
 @Validated
 @RestController
-@RequestMapping(path = "/token", produces = {MediaType.APPLICATION_JSON_VALUE})
-public class TokenController extends BaseController {
+@RequestMapping(path = "/asset", produces = {MediaType.APPLICATION_JSON_VALUE})
+public class AssetController extends BaseController {
 
-  private TokenService tokenService;
+  private AssetService assetService;
 
-  @Operation(summary = "Fetch all tokens REST API", description = "REST API to fetch all tokens")
+  @Operation(summary = "Fetch all assets REST API", description = "REST API to fetch all assets")
   @ApiResponses({
       @ApiResponse(responseCode = "200",
           content = @Content(schema = @Schema(implementation = ResponseDto.class))),
@@ -45,10 +45,10 @@ public class TokenController extends BaseController {
   @GetMapping
   public ResponseEntity<ResponseDto> fetchAll(HttpServletRequest request) {
     return ResponseEntity.status(HttpStatus.OK)
-        .body(buildResponse(request, tokenService.findAll()));
+        .body(buildResponse(request, assetService.findAll()));
   }
 
-  @Operation(summary = "Create token REST API", description = "REST API to create new token")
+  @Operation(summary = "Create asset REST API", description = "REST API to create new asset")
   @ApiResponses({
       @ApiResponse(responseCode = "201",
           content = @Content(schema = @Schema(implementation = ResponseDto.class))),
@@ -60,13 +60,13 @@ public class TokenController extends BaseController {
           content = @Content(schema = @Schema(implementation = ResponseDto.class)))})
   @PostMapping
   public ResponseEntity<ResponseDto> create(HttpServletRequest request,
-      @Valid @RequestBody TokenDto dto) {
-    tokenService.create(dto);
+      @Valid @RequestBody AssetDto dto) {
+    assetService.create(dto);
     return ResponseEntity.status(HttpStatus.CREATED).body(buildResponse(request, MESSAGE_201));
   }
 
-  @Operation(summary = "Delete Token REST API",
-      description = "REST API to delete Token based on the UCID")
+  @Operation(summary = "Delete Asset REST API",
+      description = "REST API to delete Asset based on the UCID")
   @ApiResponses({
       @ApiResponse(responseCode = "200",
           content = @Content(schema = @Schema(implementation = ResponseDto.class))),
@@ -78,7 +78,7 @@ public class TokenController extends BaseController {
   public ResponseEntity<ResponseDto> delete(HttpServletRequest request,
       @Valid @RequestParam @NotNull(message = "UCID can not be a null") @Positive(
           message = "UCID must be a positive number") long ucid) {
-    tokenService.delete(ucid);
+    assetService.delete(ucid);
     return ResponseEntity.status(HttpStatus.OK).body(buildResponse(request, MESSAGE_200));
   }
 
