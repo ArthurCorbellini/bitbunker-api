@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `asset_id` bigint NOT NULL,
   `type` varchar(10) NOT NULL,
   `quantity` decimal(20, 7) NOT NULL,
-  `fiat_currency_moved` decimal(20, 7) NOT NULL,
+  `brl_quantity` decimal(20, 7) NOT NULL,
   `notes` varchar(255) NULL,
 
   `created_at` date NOT NULL,
