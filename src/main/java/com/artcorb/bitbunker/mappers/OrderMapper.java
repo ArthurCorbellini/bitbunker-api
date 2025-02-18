@@ -15,7 +15,7 @@ public class OrderMapper {
     target.setId(source.getId());
     target.setType(OrderType.valueOf(source.getType()));
     target.setQuantity(source.getQuantity());
-    target.setFiatCurrencyMoved(source.getFiatCurrencyMoved());
+    target.setBrlQuantity(source.getBrlQuantity());
     target.setNotes(source.getNotes());
 
     Asset asset = AssetMapper.toEntity(source.getAsset());
@@ -29,7 +29,7 @@ public class OrderMapper {
     target.setId(source.getId());
     target.setType(source.getType().toString());
     target.setQuantity(source.getQuantity());
-    target.setFiatCurrencyMoved(source.getFiatCurrencyMoved());
+    target.setBrlQuantity(source.getBrlQuantity());
     target.setNotes(source.getNotes());
 
     AssetDto assetDto = AssetMapper.toDto(source.getAsset());

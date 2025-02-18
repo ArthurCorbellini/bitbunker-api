@@ -33,7 +33,7 @@ public class Order extends BaseEntity {
 
   private BigDecimal quantity;
 
-  private BigDecimal fiatCurrencyMoved;
+  private BigDecimal brlQuantity;
 
   private String notes;
 

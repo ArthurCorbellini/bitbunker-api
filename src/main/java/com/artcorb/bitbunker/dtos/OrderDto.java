@@ -19,18 +19,18 @@ public class OrderDto {
   @Valid
   private AssetDto asset;
 
-  @Schema(description = "Order type", example = "BUY", allowableValues = {"BUY", "SELL"})
+  @Schema(description = "Order type", example = "BUY", allowableValues = {"DEPOSIT", "BUY", "SELL"})
   @NotEmpty(message = "Type can not be a null or empty")
-  @Pattern(regexp = "BUY|SELL", message = "Invalid type - Allowed values: BUY|SELL")
+  @Pattern(regexp = "DEPOSIT|BUY|SELL", message = "Invalid type - Allowed values: DEPOSIT|BUY|SELL")
   private String type;
 
-  @Schema(description = "Order quantity", example = "9999")
+  @Schema(description = "Asset quantity", example = "9999")
   @NotNull(message = "Quantity can not be a null")
   private BigDecimal quantity;
 
-  @Schema(description = "Order fiat currency moved", example = "9999")
-  @NotNull(message = "Fiat currency moved can not be a null")
-  private BigDecimal fiatCurrencyMoved;
+  @Schema(description = "BRL quantity", example = "9999")
+  @NotNull(message = "BRL quantity can not be a null")
+  private BigDecimal brlQuantity;
 
   @Schema(description = "Order notes", example = "Some order note")
   private String notes;

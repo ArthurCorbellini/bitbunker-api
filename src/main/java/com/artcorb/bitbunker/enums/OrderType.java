@@ -8,6 +8,7 @@ import lombok.Getter;
 public enum OrderType {
 
   // @formatter:off
+  DEPOSIT("Deposit"),
   BUY("Buy"),
   SELL("Sell");
   // @formatter:on
