@@ -3,7 +3,6 @@ package com.artcorb.bitbunker.services.impl;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import com.artcorb.bitbunker.dtos.OrderDto;
-import com.artcorb.bitbunker.exceptions.ResourceAlreadyExistsException;
 import com.artcorb.bitbunker.exceptions.ResourceNotFoundException;
 import com.artcorb.bitbunker.mappers.OrderMapper;
 import com.artcorb.bitbunker.repos.OrderRepository;
@@ -18,8 +17,6 @@ public class OrderServiceImpl implements OrderService {
 
   @Override
   public void create(OrderDto dto) {
-    if (orderRepository.findById(dto.getId()).isPresent())
-      throw new ResourceAlreadyExistsException("Order", "ID", String.valueOf(dto.getId()));
     orderRepository.save(OrderMapper.toEntity(dto));
   }
 

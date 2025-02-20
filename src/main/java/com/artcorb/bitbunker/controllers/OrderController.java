@@ -54,8 +54,6 @@ public class OrderController extends BaseController {
           content = @Content(schema = @Schema(implementation = ResponseDto.class))),
       @ApiResponse(responseCode = "400",
           content = @Content(schema = @Schema(implementation = ResponseDto.class))),
-      @ApiResponse(responseCode = "409",
-          content = @Content(schema = @Schema(implementation = ResponseDto.class))),
       @ApiResponse(responseCode = "500",
           content = @Content(schema = @Schema(implementation = ResponseDto.class)))})
   @PostMapping
