@@ -1,7 +1,7 @@
 package com.artcorb.bitbunker.models;
 
-import com.artcorb.bitbunker.enums.AssetType;
 import com.artcorb.bitbunker.enums.AssetRank;
+import com.artcorb.bitbunker.enums.AssetType;
 import com.artcorb.bitbunker.models.base.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -22,7 +22,7 @@ import lombok.ToString;
 @Table(name = "assets")
 public class Asset extends BaseEntity {
 
-  private long ucid;
+  private Long ucid;
 
   private String name;
 
