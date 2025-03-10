@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.artcorb.bitbunker.controllers.base.BaseController;
-import com.artcorb.bitbunker.dtos.AssetDto;
+import com.artcorb.bitbunker.dtos.CreateAssetDto;
 import com.artcorb.bitbunker.dtos.ResponseDto;
 import com.artcorb.bitbunker.services.AssetService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -43,7 +43,7 @@ public class AssetController extends BaseController {
       @ApiResponse(responseCode = "500",
           content = @Content(schema = @Schema(implementation = ResponseDto.class)))})
   @GetMapping
-  public ResponseEntity<ResponseDto> fetchAll(HttpServletRequest request) {
+  public ResponseEntity<ResponseDto> fetchAllAssets(HttpServletRequest request) {
     return ResponseEntity.status(HttpStatus.OK)
         .body(buildResponse(request, assetService.findAll()));
   }
@@ -59,8 +59,8 @@ public class AssetController extends BaseController {
       @ApiResponse(responseCode = "500",
           content = @Content(schema = @Schema(implementation = ResponseDto.class)))})
   @PostMapping
-  public ResponseEntity<ResponseDto> create(HttpServletRequest request,
-      @Valid @RequestBody AssetDto dto) {
+  public ResponseEntity<ResponseDto> createAsset(HttpServletRequest request,
+      @Valid @RequestBody CreateAssetDto dto) {
     assetService.create(dto);
     return ResponseEntity.status(HttpStatus.CREATED).body(buildResponse(request, MESSAGE_201));
   }
@@ -75,7 +75,7 @@ public class AssetController extends BaseController {
       @ApiResponse(responseCode = "500",
           content = @Content(schema = @Schema(implementation = ResponseDto.class)))})
   @DeleteMapping
-  public ResponseEntity<ResponseDto> delete(HttpServletRequest request,
+  public ResponseEntity<ResponseDto> deleteAsset(HttpServletRequest request,
       @Valid @RequestParam @NotNull(message = "UCID can not be a null") @Positive(
           message = "UCID must be a positive number") long ucid) {
     assetService.delete(ucid);
