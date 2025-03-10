@@ -65,6 +65,19 @@ public class AssetController extends BaseController {
     return ResponseEntity.status(HttpStatus.CREATED).body(buildResponse(request, MESSAGE_201));
   }
 
+  @Operation(summary = "Get create asset required params REST API",
+      description = "Return all params for create an Asset")
+  @ApiResponses({
+      @ApiResponse(responseCode = "200",
+          content = @Content(schema = @Schema(implementation = ResponseDto.class))),
+      @ApiResponse(responseCode = "500",
+          content = @Content(schema = @Schema(implementation = ResponseDto.class)))})
+  @GetMapping("/create-params")
+  public ResponseEntity<ResponseDto> getCreateAssetParams(HttpServletRequest request) {
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(buildResponse(request, assetService.getCreateAssetParams()));
+  }
+
   @Operation(summary = "Delete Asset REST API",
       description = "REST API to delete Asset based on the UCID")
   @ApiResponses({
