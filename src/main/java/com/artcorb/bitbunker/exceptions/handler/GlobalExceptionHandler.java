@@ -1,14 +1,13 @@
 package com.artcorb.bitbunker.exceptions.handler;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -34,16 +33,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
       HttpHeaders headers, HttpStatusCode status, WebRequest webRequest) {
 
-    Map<String, List<String>> validationErrors = new HashMap<>();
-    ex.getBindingResult().getAllErrors().forEach((error) -> {
-      String fieldName = ((FieldError) error).getField();
-      String validationMsg = error.getDefaultMessage();
-
-      validationErrors.computeIfAbsent(fieldName, k -> new ArrayList<>()).add(validationMsg);
-    });
+    List<String> errors = ex.getBindingResult().getAllErrors().stream()
+        .map(ObjectError::getDefaultMessage).collect(Collectors.toList());
 
     ResponseDto dto = new ResponseDto(getApiPath(webRequest));
-    dto.buildError(ResponseError.VALIDATION_ERROR, validationErrors);
+    dto.buildError(ResponseError.VALIDATION_ERROR, errors, true);
 
     return new ResponseEntity<>(dto, HttpStatus.BAD_REQUEST);
   }
@@ -56,13 +50,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     // Os erros de validação do @RequestParam não são coletados pelo "handleMethodArgumentNotValid";
     // >> Caso de testes: DELETE em /asset, passando um número negativo;
     if (exception instanceof ConstraintViolationException) {
-      dto.buildError(ResponseError.VALIDATION_ERROR, exception.getMessage());
+      dto.buildError(ResponseError.VALIDATION_ERROR, Arrays.asList(exception.getMessage()), true);
       return new ResponseEntity<>(dto, HttpStatus.BAD_REQUEST);
     }
 
     // TODO send e-mail to dev team or save the error and its information in database Audit table;
 
-    dto.buildError(ResponseError.INTERNAL_SERVER_ERROR, exception.getMessage());
+    dto.buildError(ResponseError.INTERNAL_SERVER_ERROR, Arrays.asList(exception.getMessage()),
+        false);
     return new ResponseEntity<>(dto, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
@@ -71,7 +66,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
       ResourceAlreadyExistsException exception, WebRequest webRequest) {
 
     ResponseDto dto = new ResponseDto(getApiPath(webRequest));
-    dto.buildError(ResponseError.ALREADY_EXISTS, exception.getMessage());
+    dto.buildError(ResponseError.ALREADY_EXISTS, Arrays.asList(exception.getMessage()), true);
 
     return new ResponseEntity<>(dto, HttpStatus.CONFLICT);
   }
@@ -81,7 +76,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
       ResourceNotFoundException exception, WebRequest webRequest) {
 
     ResponseDto dto = new ResponseDto(getApiPath(webRequest));
-    dto.buildError(ResponseError.NOT_FOUND, exception.getMessage());
+    dto.buildError(ResponseError.NOT_FOUND, Arrays.asList(exception.getMessage()), true);
 
     return new ResponseEntity<>(dto, HttpStatus.NOT_FOUND);
   }

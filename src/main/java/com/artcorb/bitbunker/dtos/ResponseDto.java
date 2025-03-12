@@ -1,6 +1,7 @@
 package com.artcorb.bitbunker.dtos;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import com.artcorb.bitbunker.enums.ResponseError;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -32,9 +33,9 @@ public class ResponseDto {
     this.timestamp = LocalDateTime.now();
   }
 
-  public void buildError(ResponseError error, Object detail) {
+  public void buildError(ResponseError error, List<String> messages, boolean display) {
     this.success = false;
-    this.error = new ResponseErrorDto(error.toString(), error.getDescription(), detail);
+    this.error = new ResponseErrorDto(error.toString(), messages, display);
   }
 
   @Data
@@ -44,12 +45,12 @@ public class ResponseDto {
     @Schema(description = "Error code", example = "Descriptive error code")
     private String code;
 
-    @Schema(description = "Error description", example = "A brief description about the error")
-    private String message;
+    @Schema(description = "Error messages", example = "A brief description about the errors")
+    private List<String> messages;
 
-    @Schema(description = "Error details, if any",
-        example = "Details about the error, if any (can be a Json object)")
-    private Object details;
+    @Schema(description = "Display error",
+        example = "True if the error can be displayed to the final user")
+    private boolean display;
   }
 
 }
