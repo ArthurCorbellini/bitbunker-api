@@ -1,6 +1,6 @@
 package com.artcorb.bitbunker.models;
 
-import com.artcorb.bitbunker.enums.AssetRank;
+import com.artcorb.bitbunker.enums.AssetTier;
 import com.artcorb.bitbunker.enums.AssetType;
 import com.artcorb.bitbunker.models.base.BaseEntity;
 import jakarta.persistence.Entity;
@@ -32,6 +32,6 @@ public class Asset extends BaseEntity {
   private AssetType type;
 
   @Enumerated(EnumType.STRING)
-  private AssetRank classification;
+  private AssetTier tier;
 
 }

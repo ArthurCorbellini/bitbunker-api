@@ -2,13 +2,13 @@ package com.artcorb.bitbunker.services.impl;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import com.artcorb.bitbunker.dtos.AssetDto;
+import com.artcorb.bitbunker.dtos.AssetTierDto;
+import com.artcorb.bitbunker.dtos.AssetTypeDto;
 import com.artcorb.bitbunker.dtos.CreateAssetDto;
-import com.artcorb.bitbunker.dtos.CreateAssetParamsDto;
-import com.artcorb.bitbunker.enums.AssetRank;
+import com.artcorb.bitbunker.enums.AssetTier;
 import com.artcorb.bitbunker.enums.AssetType;
 import com.artcorb.bitbunker.exceptions.ResourceAlreadyExistsException;
 import com.artcorb.bitbunker.exceptions.ResourceNotFoundException;
@@ -42,16 +42,15 @@ public class AssetServiceImpl implements AssetService {
   }
 
   @Override
-  public CreateAssetParamsDto getCreateAssetParams() {
-    CreateAssetParamsDto params = new CreateAssetParamsDto();
-    params.setTypeOptions(Arrays.stream(AssetType.values())
-        .map(type -> Map.of("key", type.name(), "value", type.getLabel()))
-        .collect(Collectors.toList()));
-    params.setClassificationOptions(Arrays.stream(AssetRank.values())
-        .map(type -> Map.of("key", type.name(), "value", type.getLabel()))
-        .collect(Collectors.toList()));
+  public List<AssetTypeDto> getAssetTypeOptions() {
+    return Arrays.stream(AssetType.values())
+        .map(type -> new AssetTypeDto(type.name(), type.getLabel())).collect(Collectors.toList());
+  }
 
-    return params;
+  @Override
+  public List<AssetTierDto> getAssetTierOptions() {
+    return Arrays.stream(AssetTier.values())
+        .map(type -> new AssetTierDto(type.name(), type.getLabel())).collect(Collectors.toList());
   }
 
 }

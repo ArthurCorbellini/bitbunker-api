@@ -65,19 +65,6 @@ public class AssetController extends BaseController {
     return ResponseEntity.status(HttpStatus.CREATED).body(buildResponse(request, MESSAGE_201));
   }
 
-  @Operation(summary = "Get create asset required params REST API",
-      description = "Return all params for create an Asset")
-  @ApiResponses({
-      @ApiResponse(responseCode = "200",
-          content = @Content(schema = @Schema(implementation = ResponseDto.class))),
-      @ApiResponse(responseCode = "500",
-          content = @Content(schema = @Schema(implementation = ResponseDto.class)))})
-  @GetMapping("/create-params")
-  public ResponseEntity<ResponseDto> getCreateAssetParams(HttpServletRequest request) {
-    return ResponseEntity.status(HttpStatus.OK)
-        .body(buildResponse(request, assetService.getCreateAssetParams()));
-  }
-
   @Operation(summary = "Delete Asset REST API",
       description = "REST API to delete Asset based on the UCID")
   @ApiResponses({
@@ -95,4 +82,29 @@ public class AssetController extends BaseController {
     return ResponseEntity.status(HttpStatus.OK).body(buildResponse(request, MESSAGE_200));
   }
 
+  @Operation(summary = "Get asset type options REST API",
+      description = "Return all options for the enum Asset Type")
+  @ApiResponses({
+      @ApiResponse(responseCode = "200",
+          content = @Content(schema = @Schema(implementation = ResponseDto.class))),
+      @ApiResponse(responseCode = "500",
+          content = @Content(schema = @Schema(implementation = ResponseDto.class)))})
+  @GetMapping("/type-options")
+  public ResponseEntity<ResponseDto> getAssetTypeOptions(HttpServletRequest request) {
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(buildResponse(request, assetService.getAssetTypeOptions()));
+  }
+
+  @Operation(summary = "Get asset tier options REST API",
+      description = "Return all options for the enum Asset Tier")
+  @ApiResponses({
+      @ApiResponse(responseCode = "200",
+          content = @Content(schema = @Schema(implementation = ResponseDto.class))),
+      @ApiResponse(responseCode = "500",
+          content = @Content(schema = @Schema(implementation = ResponseDto.class)))})
+  @GetMapping("/tier-options")
+  public ResponseEntity<ResponseDto> getAssetTierOptions(HttpServletRequest request) {
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(buildResponse(request, assetService.getAssetTierOptions()));
+  }
 }

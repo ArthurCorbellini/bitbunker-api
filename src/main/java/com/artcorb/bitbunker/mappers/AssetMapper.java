@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import com.artcorb.bitbunker.dtos.AssetDto;
 import com.artcorb.bitbunker.dtos.CreateAssetDto;
-import com.artcorb.bitbunker.enums.AssetRank;
+import com.artcorb.bitbunker.enums.AssetTier;
 import com.artcorb.bitbunker.enums.AssetType;
 import com.artcorb.bitbunker.models.Asset;
 
@@ -16,7 +16,7 @@ public class AssetMapper {
     target.setName(source.getName());
     target.setSymbol(source.getSymbol());
     target.setType(AssetType.valueOf(source.getType()));
-    target.setClassification(AssetRank.valueOf(source.getClassification()));
+    target.setTier(AssetTier.valueOf(source.getTier()));
     return target;
   }
 
@@ -27,7 +27,7 @@ public class AssetMapper {
     target.setName(source.getName());
     target.setSymbol(source.getSymbol());
     target.setType(AssetType.valueOf(source.getType()));
-    target.setClassification(AssetRank.valueOf(source.getClassification()));
+    target.setTier(AssetTier.valueOf(source.getTier()));
     return target;
   }
 
@@ -38,7 +38,7 @@ public class AssetMapper {
     target.setName(source.getName());
     target.setSymbol(source.getSymbol());
     target.setType(source.getType().toString());
-    target.setClassification(source.getClassification().toString());
+    target.setTier(source.getTier().toString());
     return target;
   }
 

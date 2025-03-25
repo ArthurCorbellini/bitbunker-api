@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum AssetRank {
+public enum AssetTier {
 
   // @formatter:off
   TIER_S("Tier S"),

@@ -27,14 +27,14 @@ public class CreateAssetDto {
 
   @Schema(description = "Asset type", example = "CRYPTO", allowableValues = {"FIAT", "CRYPTO"})
   @NotEmpty(message = "Type can not be a null or empty")
-  @Pattern(regexp = "FIAT|CRYPTO", message = "Invalid classification - Allowed values: FIAT|CRYPTO")
+  @Pattern(regexp = "FIAT|CRYPTO", message = "Invalid type - Allowed values: FIAT|CRYPTO")
   private String type;
 
-  @Schema(description = "Asset rank", example = "TIER_S",
+  @Schema(description = "Asset tier", example = "TIER_S",
       allowableValues = {"TIER_S", "TIER_A", "TIER_B", "TIER_C", "TIER_D", "TIER_E", "NO_TIER"})
-  @NotEmpty(message = "Classification can not be a null or empty")
+  @NotEmpty(message = "Tier can not be a null or empty")
   @Pattern(regexp = "TIER_S|TIER_A|TIER_B|TIER_C|TIER_D|TIER_E|NO_TIER",
-      message = "Invalid classification - Allowed values: TIER_S|TIER_A|TIER_B|TIER_C|TIER_D|TIER_E|NO_TIER")
-  private String classification;
+      message = "Invalid tier - Allowed values: TIER_S|TIER_A|TIER_B|TIER_C|TIER_D|TIER_E|NO_TIER")
+  private String tier;
 
 }

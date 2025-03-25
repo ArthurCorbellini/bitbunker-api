@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS `assets` (
   `name` varchar(30) NOT NULL,
   `symbol` varchar(10) NOT NULL,
   `type` varchar(10) NOT NULL,
-  `classification` varchar(10) NOT NULL,
+  `tier` varchar(10) NOT NULL,
 
   `created_at` date NOT NULL,
   `created_by` varchar(20) NOT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `orders` (
   FOREIGN KEY (`asset_id`) REFERENCES `assets`(`id`)
 );
 
-INSERT INTO `assets` (`ucid`, `name`, `symbol`, `type`, `classification`, `created_at`, `created_by`, `updated_at`, `updated_by`)  
+INSERT INTO `assets` (`ucid`, `name`, `symbol`, `type`, `tier`, `created_at`, `created_by`, `updated_at`, `updated_by`)  
 VALUES 
   (1, 'Bitcoin', 'BTC', 'CRYPTO', 'TIER_S', '2025-02-24', 'admin', NULL, NULL),
   (2, 'Solana', 'SOL', 'CRYPTO', 'TIER_A', '2025-02-24', 'admin', NULL, NULL),
