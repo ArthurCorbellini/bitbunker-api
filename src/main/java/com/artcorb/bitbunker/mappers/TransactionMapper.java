@@ -3,17 +3,17 @@ package com.artcorb.bitbunker.mappers;
 import java.util.List;
 import java.util.stream.Collectors;
 import com.artcorb.bitbunker.dtos.AssetDto;
-import com.artcorb.bitbunker.dtos.OrderDto;
-import com.artcorb.bitbunker.enums.OrderType;
+import com.artcorb.bitbunker.dtos.TransactionDto;
+import com.artcorb.bitbunker.enums.TransactionType;
 import com.artcorb.bitbunker.models.Asset;
-import com.artcorb.bitbunker.models.Order;
+import com.artcorb.bitbunker.models.Transaction;
 
-public class OrderMapper {
+public class TransactionMapper {
 
-  public static Order toEntity(OrderDto source) {
-    Order target = new Order();
+  public static Transaction toEntity(TransactionDto source) {
+    Transaction target = new Transaction();
     target.setId(source.getId());
-    target.setType(OrderType.valueOf(source.getType()));
+    target.setType(TransactionType.valueOf(source.getType()));
     target.setQuantity(source.getQuantity());
     target.setBrlQuantity(source.getBrlQuantity());
     target.setNotes(source.getNotes());
@@ -24,8 +24,8 @@ public class OrderMapper {
     return target;
   }
 
-  public static OrderDto toDto(Order source) {
-    OrderDto target = new OrderDto();
+  public static TransactionDto toDto(Transaction source) {
+    TransactionDto target = new TransactionDto();
     target.setId(source.getId());
     target.setType(source.getType().toString());
     target.setQuantity(source.getQuantity());
@@ -38,7 +38,7 @@ public class OrderMapper {
     return target;
   }
 
-  public static List<OrderDto> toDto(List<Order> source) {
+  public static List<TransactionDto> toDto(List<Transaction> source) {
     return source.stream().map(p -> toDto(p)).collect(Collectors.toList());
   }
 

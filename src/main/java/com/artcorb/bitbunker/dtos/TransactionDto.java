@@ -8,18 +8,19 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
-@Schema(name = "Order", description = "Schema to hold Order information")
+@Schema(name = "Transaction", description = "Schema to hold Transaction information")
 @Data
-public class OrderDto {
+public class TransactionDto {
 
-  @Schema(description = "Order ID", example = "1")
+  @Schema(description = "Transaction ID", example = "1")
   private Long id;
 
-  @Schema(description = "Order asset")
+  @Schema(description = "Transaction asset")
   @Valid
   private AssetDto asset;
 
-  @Schema(description = "Order type", example = "BUY", allowableValues = {"DEPOSIT", "BUY", "SELL"})
+  @Schema(description = "Transaction type", example = "BUY",
+      allowableValues = {"DEPOSIT", "BUY", "SELL"})
   @NotEmpty(message = "Type can not be a null or empty")
   @Pattern(regexp = "DEPOSIT|BUY|SELL", message = "Invalid type - Allowed values: DEPOSIT|BUY|SELL")
   private String type;
@@ -32,6 +33,6 @@ public class OrderDto {
   @NotNull(message = "BRL quantity can not be a null")
   private BigDecimal brlQuantity;
 
-  @Schema(description = "Order notes", example = "Some order note")
+  @Schema(description = "Transaction notes", example = "Some transaction note")
   private String notes;
 }

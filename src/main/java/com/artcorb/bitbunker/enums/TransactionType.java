@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum OrderType {
+public enum TransactionType {
 
   // @formatter:off
   DEPOSIT("Deposit"),
