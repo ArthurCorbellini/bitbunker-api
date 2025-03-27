@@ -43,7 +43,7 @@ public class TransactionController extends BaseController {
       @ApiResponse(responseCode = "500",
           content = @Content(schema = @Schema(implementation = ResponseDto.class)))})
   @GetMapping
-  public ResponseEntity<ResponseDto> fetchAll(HttpServletRequest request) {
+  public ResponseEntity<ResponseDto> fetchTransactions(HttpServletRequest request) {
     return ResponseEntity.status(HttpStatus.OK)
         .body(buildResponse(request, transactionService.findAll()));
   }

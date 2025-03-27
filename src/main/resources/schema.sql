@@ -19,9 +19,9 @@ CREATE TABLE IF NOT EXISTS `transactions` (
   `asset_id` bigint NOT NULL,
   `type` varchar(10) NOT NULL,
   `amount` decimal(20, 7) NOT NULL,
-  `unitPrice` decimal(20, 7) NOT NULL,
-  `totalValue` decimal(20, 7) NOT NULL,
-  `dateTime` date NOT NULL,
+  `unit_price` decimal(20, 7) NOT NULL,
+  `total_value` decimal(20, 7) NOT NULL,
+  `date_time` date NOT NULL,
   `notes` varchar(255) NULL,
 
   `created_at` date NOT NULL,
@@ -39,7 +39,7 @@ VALUES
   (3, 'Ethereum', 'ETH', 'CRYPTO', 'TIER_A', '2025-02-24', 'admin', NULL, NULL),
   (null, 'Real', 'BRL', 'FIAT', 'NO_TIER', '2025-02-24', 'admin', NULL, NULL);
 
-INSERT INTO `transactions` (`asset_id`, `type`, `amount`, `unitPrice`, `totalValue`, `dateTime`, `notes`, `created_at`, `created_by`, `updated_at`, `updated_by`)  
+INSERT INTO `transactions` (`asset_id`, `type`, `amount`, `unit_price`, `total_value`, `date_time`, `notes`, `created_at`, `created_by`, `updated_at`, `updated_by`)
 VALUES 
   (1, 'BUY', 0.0050000, 150000.0000000, 150000.0000000, '2025-02-24', 'Compra de Bitcoin', '2025-02-24', 'admin', NULL, NULL),
   (1, 'SELL', 0.0020000, 100000.0000000, 150000.0000000, '2025-02-24', NULL, '2025-02-24', 'admin', NULL, NULL),
