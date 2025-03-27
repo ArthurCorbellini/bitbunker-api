@@ -9,6 +9,7 @@ public enum TransactionType {
 
   // @formatter:off
   DEPOSIT("Deposit"),
+  WITHDRAWAL("Withdrawal"),
   BUY("Buy"),
   SELL("Sell");
   // @formatter:on
