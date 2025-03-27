@@ -1,6 +1,7 @@
 package com.artcorb.bitbunker.models;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import com.artcorb.bitbunker.enums.TransactionType;
 import com.artcorb.bitbunker.models.base.BaseEntity;
 import jakarta.persistence.Entity;
@@ -31,9 +32,13 @@ public class Transaction extends BaseEntity {
   @Enumerated(EnumType.STRING)
   private TransactionType type;
 
-  private BigDecimal quantity;
+  private BigDecimal amount;
 
-  private BigDecimal brlQuantity;
+  private BigDecimal unitPrice;
+
+  private BigDecimal totalValue;
+
+  private LocalDateTime dateTime;
 
   private String notes;
 

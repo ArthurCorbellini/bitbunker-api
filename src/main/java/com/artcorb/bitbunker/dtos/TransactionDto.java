@@ -1,6 +1,7 @@
 package com.artcorb.bitbunker.dtos;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
@@ -25,13 +26,20 @@ public class TransactionDto {
   @Pattern(regexp = "DEPOSIT|BUY|SELL", message = "Invalid type - Allowed values: DEPOSIT|BUY|SELL")
   private String type;
 
-  @Schema(description = "Asset quantity", example = "9999")
-  @NotNull(message = "Quantity can not be a null")
-  private BigDecimal quantity;
+  @Schema(description = "Asset amount", example = "9999")
+  @NotNull(message = "Amount can not be a null")
+  private BigDecimal amount;
 
-  @Schema(description = "BRL quantity", example = "9999")
-  @NotNull(message = "BRL quantity can not be a null")
-  private BigDecimal brlQuantity;
+  @Schema(description = "Unit price", example = "9999")
+  @NotNull(message = "Unit price can not be a null")
+  private BigDecimal unitPrice;
+
+  @Schema(description = "Total value", example = "9999")
+  @NotNull(message = "Total value can not be a null")
+  private BigDecimal totalValue;
+
+  @Schema(description = "Time when the transaction happened")
+  private LocalDateTime dateTime;
 
   @Schema(description = "Transaction notes", example = "Some transaction note")
   private String notes;

@@ -2,6 +2,7 @@ package com.artcorb.bitbunker.services.impl;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
+import com.artcorb.bitbunker.dtos.CreateBuyAndSellTransactionsDto;
 import com.artcorb.bitbunker.dtos.TransactionDto;
 import com.artcorb.bitbunker.exceptions.ResourceNotFoundException;
 import com.artcorb.bitbunker.mappers.TransactionMapper;
@@ -16,8 +17,8 @@ public class TransactionServiceImpl implements TransactionService {
   private TransactionRepository transactionRepository;
 
   @Override
-  public void create(TransactionDto dto) {
-    transactionRepository.save(TransactionMapper.toEntity(dto));
+  public void createBuyAndSellTransactions(CreateBuyAndSellTransactionsDto dto) {
+    transactionRepository.saveAll(TransactionMapper.toEntity(dto));
   }
 
   @Override

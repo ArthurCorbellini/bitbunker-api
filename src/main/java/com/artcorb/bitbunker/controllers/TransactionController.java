@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.artcorb.bitbunker.controllers.base.BaseController;
+import com.artcorb.bitbunker.dtos.CreateBuyAndSellTransactionsDto;
 import com.artcorb.bitbunker.dtos.ResponseDto;
-import com.artcorb.bitbunker.dtos.TransactionDto;
 import com.artcorb.bitbunker.services.TransactionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -48,7 +48,8 @@ public class TransactionController extends BaseController {
         .body(buildResponse(request, transactionService.findAll()));
   }
 
-  @Operation(summary = "Create Transaction", description = "REST API to create new transaction")
+  @Operation(summary = "Create Buy and Sell Transactions",
+      description = "REST API to create buy and sell transactions")
   @ApiResponses({
       @ApiResponse(responseCode = "201",
           content = @Content(schema = @Schema(implementation = ResponseDto.class))),
@@ -56,10 +57,10 @@ public class TransactionController extends BaseController {
           content = @Content(schema = @Schema(implementation = ResponseDto.class))),
       @ApiResponse(responseCode = "500",
           content = @Content(schema = @Schema(implementation = ResponseDto.class)))})
-  @PostMapping
-  public ResponseEntity<ResponseDto> create(HttpServletRequest request,
-      @Valid @RequestBody TransactionDto dto) {
-    transactionService.create(dto);
+  @PostMapping("/buy-and-sell")
+  public ResponseEntity<ResponseDto> createBuyAndSellTransactions(HttpServletRequest request,
+      @Valid @RequestBody CreateBuyAndSellTransactionsDto dto) {
+    transactionService.createBuyAndSellTransactions(dto);
     return ResponseEntity.status(HttpStatus.CREATED).body(buildResponse(request, MESSAGE_201));
   }
 
