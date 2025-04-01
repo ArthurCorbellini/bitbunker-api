@@ -15,7 +15,7 @@ public class TransactionMapper {
   public static List<Transaction> toEntity(CreateBuyAndSellTransactionsDto source) {
     Transaction sell = new Transaction();
     sell.setType(TransactionType.SELL);
-    sell.setDateTime(source.getDate());
+    sell.setDateTime(source.getDateTime());
     sell.setNotes(source.getNotes());
 
     Asset sellAsset = new Asset();
@@ -27,7 +27,7 @@ public class TransactionMapper {
 
     Transaction buy = new Transaction();
     buy.setType(TransactionType.BUY);
-    buy.setDateTime(source.getDate());
+    buy.setDateTime(source.getDateTime());
     buy.setNotes(source.getNotes());
 
     Asset buyAsset = new Asset();

@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class CreateBuyAndSellTransactionsDto {
 
-  private LocalDateTime date;
+  private LocalDateTime dateTime;
 
   private String notes;
 
