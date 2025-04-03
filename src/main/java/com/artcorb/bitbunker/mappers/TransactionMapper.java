@@ -5,12 +5,29 @@ import java.util.List;
 import java.util.stream.Collectors;
 import com.artcorb.bitbunker.dtos.AssetDto;
 import com.artcorb.bitbunker.dtos.CreateBuyAndSellTransactionsDto;
+import com.artcorb.bitbunker.dtos.CreateTransactionDto;
 import com.artcorb.bitbunker.dtos.TransactionDto;
 import com.artcorb.bitbunker.enums.TransactionType;
 import com.artcorb.bitbunker.models.Asset;
 import com.artcorb.bitbunker.models.Transaction;
 
 public class TransactionMapper {
+
+  public static Transaction toEntity(CreateTransactionDto source) {
+    Transaction entity = new Transaction();
+    entity.setType(TransactionType.valueOf(source.getType()));
+    entity.setAmount(source.getAmount());
+    entity.setUnitPrice(source.getUnitPrice());
+    entity.setTotalValue(source.getTotalValue());
+    entity.setDateTime(source.getDateTime());
+    entity.setNotes(source.getNotes());
+
+    Asset asset = new Asset();
+    asset.setId(source.getAssetId());
+    entity.setAsset(asset);
+
+    return entity;
+  }
 
   public static List<Transaction> toEntity(CreateBuyAndSellTransactionsDto source) {
     Transaction sell = new Transaction();

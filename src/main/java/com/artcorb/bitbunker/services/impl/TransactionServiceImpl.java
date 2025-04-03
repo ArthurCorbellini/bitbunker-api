@@ -3,6 +3,7 @@ package com.artcorb.bitbunker.services.impl;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import com.artcorb.bitbunker.dtos.CreateBuyAndSellTransactionsDto;
+import com.artcorb.bitbunker.dtos.CreateTransactionDto;
 import com.artcorb.bitbunker.dtos.TransactionDto;
 import com.artcorb.bitbunker.exceptions.ResourceNotFoundException;
 import com.artcorb.bitbunker.mappers.TransactionMapper;
@@ -30,5 +31,10 @@ public class TransactionServiceImpl implements TransactionService {
   @Override
   public List<TransactionDto> findAll() {
     return TransactionMapper.toDto(transactionRepository.findAll());
+  }
+
+  @Override
+  public void createTransactions(CreateTransactionDto dto) {
+    transactionRepository.save(TransactionMapper.toEntity(dto));
   }
 }
