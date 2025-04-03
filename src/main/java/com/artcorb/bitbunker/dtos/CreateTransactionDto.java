@@ -41,7 +41,7 @@ public class CreateTransactionDto {
   private BigDecimal totalValue;
 
   @Schema(description = "Date and time in ISO 8601 format", example = "2024-04-02T14:30:00")
-  @NotEmpty(message = "Date Time cannot be null or empty")
+  @NotNull(message = "Date Time cannot be null")
   private LocalDateTime dateTime;
 
   @Schema(description = "Additional notes about the transaction", example = "Payment received")
