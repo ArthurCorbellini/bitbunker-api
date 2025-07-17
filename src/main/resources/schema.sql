@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `asset_categories` (
 --   - Cada ativo é vinculado a uma categoria.
 -- Regras:
 --   - O símbolo, UCID e nome do ativo são obrigatórios.
---   - O par (ucid, category_id) deve ser único.
+--   - O ucid deve ser único.
 -- Observações:
 --   - Os dados inseridos aqui representam o vínculo ativo com categoria,
 --     não necessariamente os que o usuário possui em carteira.
@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS `assets` (
   `symbol` varchar(10) NOT NULL,
   `name` varchar(30) NOT NULL,
 
-  UNIQUE (`ucid`, `category_id`),
+  UNIQUE (`ucid`),
   FOREIGN KEY (`category_id`) REFERENCES `asset_categories`(`id`)
 );
 --------------------------------------------

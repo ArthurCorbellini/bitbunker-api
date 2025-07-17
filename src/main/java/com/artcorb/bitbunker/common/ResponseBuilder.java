@@ -11,7 +11,6 @@ import com.artcorb.bitbunker.enums.ResponseError;
 public class ResponseBuilder {
 
   protected static final String MESSAGE_200 = "Request processed successfully";
-  protected static final String MESSAGE_201 = "Register created successfully";
 
   public ResponseEntity<ResponseDto> ok() {
     return ResponseEntity.ok().body(ResponseDto.buildSuccess(MESSAGE_200));

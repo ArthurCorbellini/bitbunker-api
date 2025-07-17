@@ -4,41 +4,30 @@ import java.util.List;
 import java.util.stream.Collectors;
 import com.artcorb.bitbunker.dtos.AssetDto;
 import com.artcorb.bitbunker.dtos.CreateAssetDto;
-import com.artcorb.bitbunker.enums.AssetTier;
-import com.artcorb.bitbunker.enums.AssetType;
 import com.artcorb.bitbunker.models.Asset;
+import com.artcorb.bitbunker.models.AssetCategory;
 
 public class AssetMapper {
 
   public static Asset toEntity(CreateAssetDto source) {
     Asset target = new Asset();
     target.setUcid(source.getUcid());
-    target.setName(source.getName());
     target.setSymbol(source.getSymbol());
-    target.setType(AssetType.valueOf(source.getType()));
-    target.setTier(AssetTier.valueOf(source.getTier()));
-    return target;
-  }
+    target.setName(source.getName());
 
-  public static Asset toEntity(AssetDto source) {
-    Asset target = new Asset();
-    target.setId(source.getId());
-    target.setUcid(source.getUcid());
-    target.setName(source.getName());
-    target.setSymbol(source.getSymbol());
-    target.setType(AssetType.valueOf(source.getType()));
-    target.setTier(AssetTier.valueOf(source.getTier()));
+    AssetCategory category = new AssetCategory();
+    category.setId(source.getCategoryId());
+    target.setCategory(category);
+
     return target;
   }
 
   public static AssetDto toDto(Asset source) {
     AssetDto target = new AssetDto();
-    target.setId(source.getId());
     target.setUcid(source.getUcid());
-    target.setName(source.getName());
+    target.setCategory(AssetCategoryMapper.toDto(source.getCategory()));
     target.setSymbol(source.getSymbol());
-    target.setType(source.getType().toString());
-    target.setTier(source.getTier().toString());
+    target.setName(source.getName());
     return target;
   }
 
