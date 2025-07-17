@@ -64,10 +64,10 @@ CREATE TABLE IF NOT EXISTS `assets` (
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
-  `symbol` varchar(10) NOT NULL,
-  `name` varchar(30) NOT NULL,
   `ucid` bigint NOT NULL,
   `category_id` bigint NOT NULL,
+  `symbol` varchar(10) NOT NULL,
+  `name` varchar(30) NOT NULL,
 
   UNIQUE (`ucid`, `category_id`),
   FOREIGN KEY (`category_id`) REFERENCES `asset_categories`(`id`)

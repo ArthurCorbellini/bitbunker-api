@@ -32,13 +32,13 @@ public class Transaction extends BaseEntity {
   @Enumerated(EnumType.STRING)
   private TransactionType type;
 
-  private BigDecimal amount;
+  private LocalDateTime dateTime;
+
+  private BigDecimal quantity;
 
   private BigDecimal unitPrice;
 
-  private BigDecimal totalValue;
-
-  private LocalDateTime dateTime;
+  private BigDecimal fee;
 
   private String notes;
 
