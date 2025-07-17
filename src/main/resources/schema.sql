@@ -5,13 +5,13 @@
 -- Tabela: users (SERÁ IMPLEMENTADO POSTERIORMENTE)
 -- Descrição:
 --   - Armazena os dados dos usuários cadastrados no sistema.
---   - Cada usuário pode possuir um ou mais portfólios de criptoativos.
+--   - Cada usuário poderá cadastrar categorias, ativos e transações.
 -- Regras:
 --   - O e-mail deve ser único.
---   - A senha deve ser armazenada em formato criptografado.
---   - Campos de auditoria permitem rastrear criação e atualização do registro.
+--   - A senha deve ser armazenada de forma segura (hash, com criptografia).
+--   - Campos de auditoria permitem rastrear criação e atualização dos registros.
 -- Observações:
---   - Será desenvolvido posteriormente, junto com o Spring Security;
+--   - A autenticação será implementada futuramente com Spring Security.
 
 -- CREATE TABLE IF NOT EXISTS `users` (
 --   `id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -24,38 +24,16 @@
 -- );
 --------------------------------------------
 --------------------------------------------
--- Tabela: portfolios
--- Descrição:
---   - Armazena os portfólios individuais de cada usuário.
---   - Permite organizar as transações em diferentes carteiras,
---     possibilitando dashboards e visões personalizadas por portfólio.
--- Regras:
---   - Cada portfólio pertence a um único usuário (relacionamento via chave estrangeira).
---   - Todos os usuários têm permissão para cadastrar seus próprios portfólios.
--- Observações:
---   - Um usuário pode possuir múltiplos portfólios.
---   - Campos de auditoria básicos estão incluídos (data de criação e atualização).
-
-CREATE TABLE IF NOT EXISTS `portfolios` (
-  `id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-
-  `name` varchar(30) NOT NULL,
-  -- `owner_id` bigint NOT NULL,
-
-  -- FOREIGN KEY (`owner_id`) REFERENCES `users`(`id`)
-);
---------------------------------------------
---------------------------------------------
 -- Tabela: asset_categories
 -- Descrição:
---   - Armazena as categorias de ativos recomendados dentro de um portfólio.
---   - Permite definir percentuais sugeridos para rebalanceamento da carteira.
+--   - Armazena as categorias de ativos criadas pelo usuário.
+--   - Permite definir percentuais recomendados para rebalanceamento da carteira.
 -- Regras:
---   - Cada categoria pertence a um portfólio específico.
+--   - O nome da categoria é obrigatório.
+--   - O percentual recomendado é armazenado com duas casas decimais.
 -- Observações:
---   - Usada na definição da carteira recomendada.
+--   - No futuro, cada categoria será vinculada a um usuário via `owner_id`.
+--   - Campos de auditoria são gerenciados automaticamente pelo banco.
 
 CREATE TABLE IF NOT EXISTS `asset_categories` (
   `id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -63,24 +41,23 @@ CREATE TABLE IF NOT EXISTS `asset_categories` (
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
   `name` varchar(30) NOT NULL,
-  `recommended_percentage` decimal(5, 2) NOT NULL,
-  `portfolio_id` bigint NOT NULL,
+  `recommended_percentage` decimal(5, 2) NOT NULL
+  -- `owner_id` bigint NOT NULL,
 
-  FOREIGN KEY (`portfolio_id`) REFERENCES `portfolios`(`id`)
+  -- FOREIGN KEY (`owner_id`) REFERENCES `users`(`id`)
 );
 --------------------------------------------
 --------------------------------------------
 -- Tabela: assets
 -- Descrição:
---   - Armazena os ativos que compõem a carteira recomendada.
---   - Cada ativo pertence a uma categoria de ativo.
+--   - Armazena os ativos que fazem parte da carteira recomendada.
+--   - Cada ativo é vinculado a uma categoria.
 -- Regras:
---   - Um par (ucid, category_id) deve ser único.
---   - Cada ativo deve estar vinculado a uma categoria, que por sua vez está vinculada
---     a um portfolio.
+--   - O símbolo, UCID e nome do ativo são obrigatórios.
+--   - O par (ucid, category_id) deve ser único.
 -- Observações:
---   - Os dados inseridos aqui representam os ativos recomendados,
---     não necessariamente os que o usuário já possui em carteira.
+--   - Os dados inseridos aqui representam o vínculo ativo com categoria,
+--     não necessariamente os que o usuário possui em carteira.
 
 CREATE TABLE IF NOT EXISTS `assets` (
   `id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -99,15 +76,15 @@ CREATE TABLE IF NOT EXISTS `assets` (
 --------------------------------------------
 -- Tabela: transactions
 -- Descrição:
---   - Registra todas as transações financeiras feitas com os ativos.
---   - Essencial para o cálculo de performance e histórico do portfólio.
+--   - Armazena o histórico de transações realizadas pelo usuário com ativos.
+--   - Essencial para cálculo de desempenho, saldo e geração de relatórios/dashboards.
 -- Regras:
---   - Cada transação deve estar vinculada a um ativo.
---   - Qualquer usuário pode cadastrar transações dentro de seus portfólios.
---   - Cada transação deve estar vinculado a um ativo, que por sua vez está vinculado
---     a uma categoria, que por sua vez está vinculada a um portfolio.
+--   - Cada transação deve estar vinculada a um ativo, que por sua vez está vinculada a uma
+--     categoria, que por sua vez está vinculada a um usuário.
+--   - O tipo de transação é restrito a: DEPOSIT, WITHDRAWAL, BUY ou SELL.
+--   - Datas, quantidades e valores unitários são obrigatórios.
 -- Observações:
---   - Tipos permitidos: DEPOSIT, WITHDRAWAL, BUY, SELL.
+--   - Permite armazenar anotações opcionais via campo `notes`.
 
 CREATE TABLE IF NOT EXISTS `transactions` (
   `id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY,
