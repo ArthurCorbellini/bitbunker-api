@@ -1,7 +1,8 @@
 package com.artcorb.bitbunker.models;
 
 import java.math.BigDecimal;
-import com.artcorb.bitbunker.enums.OrderType;
+import java.time.LocalDateTime;
+import com.artcorb.bitbunker.enums.TransactionType;
 import com.artcorb.bitbunker.models.base.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -21,19 +22,23 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "orders")
-public class Order extends BaseEntity {
+@Table(name = "transactions")
+public class Transaction extends BaseEntity {
 
   @ManyToOne
-  @JoinColumn(name = "token_id")
-  private Token token;
+  @JoinColumn(name = "asset_id")
+  private Asset asset;
 
   @Enumerated(EnumType.STRING)
-  private OrderType type;
+  private TransactionType type;
 
-  private BigDecimal quantity;
+  private BigDecimal amount;
 
-  private BigDecimal fiatCurrencyMoved;
+  private BigDecimal unitPrice;
+
+  private BigDecimal totalValue;
+
+  private LocalDateTime dateTime;
 
   private String notes;
 

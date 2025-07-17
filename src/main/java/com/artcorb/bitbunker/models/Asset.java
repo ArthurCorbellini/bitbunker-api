@@ -1,6 +1,7 @@
 package com.artcorb.bitbunker.models;
 
-import com.artcorb.bitbunker.enums.TokenRank;
+import com.artcorb.bitbunker.enums.AssetTier;
+import com.artcorb.bitbunker.enums.AssetType;
 import com.artcorb.bitbunker.models.base.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -18,16 +19,19 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "tokens")
-public class Token extends BaseEntity {
+@Table(name = "assets")
+public class Asset extends BaseEntity {
 
-  private long ucid;
+  private Long ucid;
 
   private String name;
 
   private String symbol;
 
   @Enumerated(EnumType.STRING)
-  private TokenRank classification;
+  private AssetType type;
+
+  @Enumerated(EnumType.STRING)
+  private AssetTier tier;
 
 }

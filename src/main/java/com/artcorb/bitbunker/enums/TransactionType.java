@@ -5,16 +5,13 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum TokenRank {
+public enum TransactionType {
 
   // @formatter:off
-  TIER_S("Tier S"),
-  TIER_A("Tier A"),
-  TIER_B("Tier B"), 
-  TIER_C("Tier C"), 
-  TIER_D("Tier D"),
-  TIER_E("Tier E"),
-  NO_TIER("No tier");
+  DEPOSIT("Deposit"),
+  WITHDRAWAL("Withdrawal"),
+  BUY("Buy"),
+  SELL("Sell");
   // @formatter:on
 
   private String label;

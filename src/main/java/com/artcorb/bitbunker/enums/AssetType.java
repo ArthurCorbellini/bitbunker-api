@@ -5,11 +5,11 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum OrderType {
+public enum AssetType {
 
   // @formatter:off
-  BUY("Buy"),
-  SELL("Sell");
+  FIAT("Fiat currency"),
+  CRYPTO("Cryptocurrency");
   // @formatter:on
 
   private String label;
