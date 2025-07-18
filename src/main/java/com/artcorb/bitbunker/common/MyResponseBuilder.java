@@ -8,7 +8,7 @@ import com.artcorb.bitbunker.dtos.ResponseDto;
 import com.artcorb.bitbunker.enums.ResponseError;
 
 @Component
-public class ResponseBuilder {
+public class MyResponseBuilder {
 
   protected static final String MESSAGE_200 = "Request processed successfully";
 

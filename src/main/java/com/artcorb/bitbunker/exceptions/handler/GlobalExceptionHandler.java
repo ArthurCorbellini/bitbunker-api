@@ -7,7 +7,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
-import com.artcorb.bitbunker.common.ResponseBuilder;
+import com.artcorb.bitbunker.common.MyResponseBuilder;
 import com.artcorb.bitbunker.dtos.ResponseDto;
 import com.artcorb.bitbunker.enums.ResponseError;
 import com.artcorb.bitbunker.exceptions.ResourceAlreadyExistsException;
@@ -19,18 +19,18 @@ import lombok.AllArgsConstructor;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-  private final ResponseBuilder rb;
+  private final MyResponseBuilder mrb;
 
   @ExceptionHandler(ResourceAlreadyExistsException.class)
   public ResponseEntity<ResponseDto> handleResourceAlreadyExistsException(
       ResourceAlreadyExistsException exception) {
-    return rb.conflict(ResponseError.ALREADY_EXISTS, List.of(exception.getMessage()), true);
+    return mrb.conflict(ResponseError.ALREADY_EXISTS, List.of(exception.getMessage()), true);
   }
 
   @ExceptionHandler(ResourceNotFoundException.class)
   public ResponseEntity<ResponseDto> handleResourceNotFoundException(
       ResourceNotFoundException exception, WebRequest webRequest) {
-    return rb.notFound(ResponseError.NOT_FOUND, List.of(exception.getMessage()), true);
+    return mrb.notFound(ResponseError.NOT_FOUND, List.of(exception.getMessage()), true);
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -46,13 +46,13 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(ConstraintViolationException.class)
   public ResponseEntity<ResponseDto> handleConstraintViolationException(
       ConstraintViolationException exception) {
-    return rb.badRequest(ResponseError.VALIDATION_ERROR, List.of(exception.getMessage()), true);
+    return mrb.badRequest(ResponseError.VALIDATION_ERROR, List.of(exception.getMessage()), true);
   }
 
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ResponseDto> handleGlobalException(Exception exception) {
     // TODO send e-mail to dev team or save the error and its information in database Audit table;
-    return rb.internalServerError(ResponseError.INTERNAL_SERVER_ERROR,
+    return mrb.internalServerError(ResponseError.INTERNAL_SERVER_ERROR,
         List.of(exception.getMessage()), false);
   }
 

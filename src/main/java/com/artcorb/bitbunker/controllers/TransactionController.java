@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.artcorb.bitbunker.common.ResponseBuilder;
+import com.artcorb.bitbunker.common.MyResponseBuilder;
 import com.artcorb.bitbunker.dtos.CreateSwapTransactionsDto;
 import com.artcorb.bitbunker.dtos.CreateTransactionDto;
 import com.artcorb.bitbunker.dtos.ResponseDto;
@@ -32,7 +32,7 @@ import lombok.AllArgsConstructor;
 @RequestMapping(path = "/transaction", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class TransactionController {
 
-  private final ResponseBuilder rb;
+  private final MyResponseBuilder mrb;
   private final TransactionService transactionService;
 
   @Operation(summary = "Fetch all Transactions",
@@ -45,7 +45,7 @@ public class TransactionController {
           content = @Content(schema = @Schema(implementation = ResponseDto.class)))})
   @GetMapping
   public ResponseEntity<ResponseDto> fetchTransactions() {
-    return rb.ok(transactionService.findAll());
+    return mrb.ok(transactionService.findAll());
   }
 
   @Operation(summary = "Create Transaction",
@@ -60,7 +60,7 @@ public class TransactionController {
   @PostMapping
   public ResponseEntity<ResponseDto> createTransaction(
       @Valid @RequestBody CreateTransactionDto dto) {
-    return rb.created(transactionService.createTransaction(dto));
+    return mrb.created(transactionService.createTransaction(dto));
   }
 
   @Operation(summary = "Delete Transaction", description = "Deletes an asset category by its ID")
@@ -75,7 +75,7 @@ public class TransactionController {
   public ResponseEntity<ResponseDto> delete(
       @PathVariable @Positive(message = "ID must be a positive number") long id) {
     transactionService.delete(id);
-    return rb.ok();
+    return mrb.ok();
   }
 
   @Operation(summary = "Create Swap Transactions",
@@ -90,7 +90,7 @@ public class TransactionController {
   @PostMapping("/swap")
   public ResponseEntity<ResponseDto> createSwapTransactions(
       @Valid @RequestBody CreateSwapTransactionsDto dto) {
-    return rb.created(transactionService.createSwapTransactions(dto));
+    return mrb.created(transactionService.createSwapTransactions(dto));
   }
 
 }

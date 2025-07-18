@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.artcorb.bitbunker.common.ResponseBuilder;
+import com.artcorb.bitbunker.common.MyResponseBuilder;
 import com.artcorb.bitbunker.dtos.CreateAssetDto;
 import com.artcorb.bitbunker.dtos.ResponseDto;
 import com.artcorb.bitbunker.services.AssetService;
@@ -31,7 +31,7 @@ import lombok.AllArgsConstructor;
 @RequestMapping(path = "/asset", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class AssetController {
 
-  private final ResponseBuilder rb;
+  private final MyResponseBuilder mrb;
   private final AssetService assetService;
 
   @Operation(summary = "Fetch all Assets", description = "Retrieves a list of all registered asset")
@@ -42,7 +42,7 @@ public class AssetController {
           content = @Content(schema = @Schema(implementation = ResponseDto.class)))})
   @GetMapping
   public ResponseEntity<ResponseDto> fetchAllAssets() {
-    return rb.ok(assetService.findAll());
+    return mrb.ok(assetService.findAll());
   }
 
   @Operation(summary = "Create Asset", description = "Creates a new asset with the given data")
@@ -57,7 +57,7 @@ public class AssetController {
           content = @Content(schema = @Schema(implementation = ResponseDto.class)))})
   @PostMapping
   public ResponseEntity<ResponseDto> createAsset(@Valid @RequestBody CreateAssetDto dto) {
-    return rb.created(assetService.create(dto));
+    return mrb.created(assetService.create(dto));
   }
 
   @Operation(summary = "Delete Asset", description = "Deletes an asset category by its UCID")
@@ -72,7 +72,7 @@ public class AssetController {
   public ResponseEntity<ResponseDto> deleteAsset(
       @PathVariable @Positive(message = "UCID must be a positive number") long ucid) {
     assetService.delete(ucid);
-    return rb.ok();
+    return mrb.ok();
   }
 
 }

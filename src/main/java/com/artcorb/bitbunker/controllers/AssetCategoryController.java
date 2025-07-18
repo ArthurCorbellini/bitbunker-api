@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.artcorb.bitbunker.common.ResponseBuilder;
+import com.artcorb.bitbunker.common.MyResponseBuilder;
 import com.artcorb.bitbunker.dtos.CreateAssetCategoryDto;
 import com.artcorb.bitbunker.dtos.ResponseDto;
 import com.artcorb.bitbunker.services.AssetCategoryService;
@@ -31,7 +31,7 @@ import lombok.AllArgsConstructor;
 @RequestMapping(path = "/asset-category", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class AssetCategoryController {
 
-  private final ResponseBuilder rb;
+  private final MyResponseBuilder mrb;
   private final AssetCategoryService assetCategoryService;
 
   @Operation(summary = "Fetch All Asset Categories",
@@ -44,7 +44,7 @@ public class AssetCategoryController {
           content = @Content(schema = @Schema(implementation = ResponseDto.class)))})
   @GetMapping
   public ResponseEntity<ResponseDto> fetchAllAssetCategories() {
-    return rb.ok(assetCategoryService.fetchAll());
+    return mrb.ok(assetCategoryService.fetchAll());
   }
 
   @Operation(summary = "Create Asset Category",
@@ -59,7 +59,7 @@ public class AssetCategoryController {
   @PostMapping
   public ResponseEntity<ResponseDto> createAssetCategory(
       @Valid @RequestBody CreateAssetCategoryDto dto) {
-    return rb.created(assetCategoryService.create(dto));
+    return mrb.created(assetCategoryService.create(dto));
   }
 
   @Operation(summary = "Delete Asset Category", description = "Deletes an asset category by its ID")
@@ -74,7 +74,7 @@ public class AssetCategoryController {
   public ResponseEntity<ResponseDto> deleteAssetCategory(
       @PathVariable @Positive(message = "ID must be a positive number") long id) {
     assetCategoryService.delete(id);
-    return rb.ok();
+    return mrb.ok();
   }
 
 }
