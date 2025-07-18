@@ -72,7 +72,7 @@ public class AssetCategoryController {
           content = @Content(schema = @Schema(implementation = ResponseDto.class)))})
   @DeleteMapping("/{id}")
   public ResponseEntity<ResponseDto> deleteAssetCategory(
-      @PathVariable @Positive(message = "Id must be a positive number") long id) {
+      @PathVariable @Positive(message = "ID must be a positive number") long id) {
     assetCategoryService.delete(id);
     return rb.ok();
   }

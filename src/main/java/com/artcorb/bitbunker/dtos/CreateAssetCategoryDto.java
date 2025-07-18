@@ -12,7 +12,7 @@ import lombok.Data;
 public class CreateAssetCategoryDto {
 
   @Schema(description = "Asset category name", example = "Altcoin A")
-  @NotEmpty(message = "Name can not be a null or empty")
+  @NotEmpty(message = "Name cannot be null or empty")
   @Size(max = 30, message = "The length of the asset category name should be less than 30")
   private String name;
 
