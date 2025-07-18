@@ -1,18 +1,17 @@
 package com.artcorb.bitbunker.controllers;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.artcorb.bitbunker.controllers.base.BaseController;
-import com.artcorb.bitbunker.dtos.CreateBuyAndSellTransactionsDto;
+import com.artcorb.bitbunker.common.ResponseBuilder;
+import com.artcorb.bitbunker.dtos.CreateSwapTransactionsDto;
 import com.artcorb.bitbunker.dtos.CreateTransactionDto;
 import com.artcorb.bitbunker.dtos.ResponseDto;
 import com.artcorb.bitbunker.services.TransactionService;
@@ -22,9 +21,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 
@@ -33,68 +30,67 @@ import lombok.AllArgsConstructor;
 @Validated
 @RestController
 @RequestMapping(path = "/transaction", produces = {MediaType.APPLICATION_JSON_VALUE})
-public class TransactionController extends BaseController {
+public class TransactionController {
 
-  private TransactionService transactionService;
+  private final ResponseBuilder rb;
+  private final TransactionService transactionService;
 
-  @Operation(summary = "Fetch all transactions", description = "REST API to fetch all transactions")
+  @Operation(summary = "Fetch all Transactions",
+      description = "Retrieves a list of all registered transactions")
   @ApiResponses({
       @ApiResponse(responseCode = "200",
+          description = "List of transactions retrieved successfully",
           content = @Content(schema = @Schema(implementation = ResponseDto.class))),
-      @ApiResponse(responseCode = "500",
+      @ApiResponse(responseCode = "500", description = "Internal server error",
           content = @Content(schema = @Schema(implementation = ResponseDto.class)))})
   @GetMapping
-  public ResponseEntity<ResponseDto> fetchTransactions(HttpServletRequest request) {
-    return ResponseEntity.status(HttpStatus.OK)
-        .body(buildResponse(request, transactionService.findAll()));
+  public ResponseEntity<ResponseDto> fetchTransactions() {
+    return rb.ok(transactionService.findAll());
   }
 
-  @Operation(summary = "Create Buy and Sell Transactions",
-      description = "REST API to create buy and sell transactions")
+  @Operation(summary = "Create Transaction",
+      description = "Creates a new trasaction with the given data")
   @ApiResponses({
-      @ApiResponse(responseCode = "201",
+      @ApiResponse(responseCode = "201", description = "Transaction created successfully",
           content = @Content(schema = @Schema(implementation = ResponseDto.class))),
-      @ApiResponse(responseCode = "400",
+      @ApiResponse(responseCode = "400", description = "Invalid input data (validation errors)",
           content = @Content(schema = @Schema(implementation = ResponseDto.class))),
-      @ApiResponse(responseCode = "500",
-          content = @Content(schema = @Schema(implementation = ResponseDto.class)))})
-  @PostMapping("/buy-and-sell")
-  public ResponseEntity<ResponseDto> createBuyAndSellTransactions(HttpServletRequest request,
-      @Valid @RequestBody CreateBuyAndSellTransactionsDto dto) {
-    transactionService.createBuyAndSellTransactions(dto);
-    return ResponseEntity.status(HttpStatus.CREATED).body(buildResponse(request, MESSAGE_201));
-  }
-
-  @Operation(summary = "Create Transaction", description = "REST API to create new transaction")
-  @ApiResponses({
-      @ApiResponse(responseCode = "201",
-          content = @Content(schema = @Schema(implementation = ResponseDto.class))),
-      @ApiResponse(responseCode = "400",
-          content = @Content(schema = @Schema(implementation = ResponseDto.class))),
-      @ApiResponse(responseCode = "500",
+      @ApiResponse(responseCode = "500", description = "Internal server error",
           content = @Content(schema = @Schema(implementation = ResponseDto.class)))})
   @PostMapping
-  public ResponseEntity<ResponseDto> createTransaction(HttpServletRequest request,
+  public ResponseEntity<ResponseDto> createTransaction(
       @Valid @RequestBody CreateTransactionDto dto) {
-    transactionService.createTransactions(dto);
-    return ResponseEntity.status(HttpStatus.CREATED).body(buildResponse(request, MESSAGE_201));
+    return rb.created(transactionService.createTransaction(dto));
   }
 
-  @Operation(summary = "Delete Transaction",
-      description = "REST API to delete Transaction based on the ID")
+  @Operation(summary = "Delete Transaction", description = "Deletes an asset category by its ID")
   @ApiResponses({
-      @ApiResponse(responseCode = "200",
+      @ApiResponse(responseCode = "200", description = "Transaction category deleted successfully",
           content = @Content(schema = @Schema(implementation = ResponseDto.class))),
-      @ApiResponse(responseCode = "404",
+      @ApiResponse(responseCode = "404", description = "Transaction not found",
           content = @Content(schema = @Schema(implementation = ResponseDto.class))),
-      @ApiResponse(responseCode = "500",
+      @ApiResponse(responseCode = "500", description = "Internal server error",
           content = @Content(schema = @Schema(implementation = ResponseDto.class)))})
-  @DeleteMapping
-  public ResponseEntity<ResponseDto> delete(HttpServletRequest request,
-      @Valid @RequestParam @NotNull(message = "ID can not be a null") @Positive(
-          message = "ID must be a positive number") long id) {
+  @DeleteMapping("/{id}")
+  public ResponseEntity<ResponseDto> delete(
+      @PathVariable @Positive(message = "ID must be a positive number") long id) {
     transactionService.delete(id);
-    return ResponseEntity.status(HttpStatus.OK).body(buildResponse(request, MESSAGE_200));
+    return rb.ok();
+  }
+
+  @Operation(summary = "Create Swap Transactions",
+      description = "Creates a new swap transaction with the given data")
+  @ApiResponses({
+      @ApiResponse(responseCode = "201", description = "Swap transaction created successfully",
+          content = @Content(schema = @Schema(implementation = ResponseDto.class))),
+      @ApiResponse(responseCode = "400", description = "Invalid input data (validation errors)",
+          content = @Content(schema = @Schema(implementation = ResponseDto.class))),
+      @ApiResponse(responseCode = "500", description = "Internal server error",
+          content = @Content(schema = @Schema(implementation = ResponseDto.class)))})
+  @PostMapping("/swap")
+  public ResponseEntity<ResponseDto> createSwapTransactions(
+      @Valid @RequestBody CreateSwapTransactionsDto dto) {
+    return rb.created(transactionService.createSwapTransactions(dto));
   }
 
 }

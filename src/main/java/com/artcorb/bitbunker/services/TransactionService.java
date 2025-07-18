@@ -1,18 +1,18 @@
 package com.artcorb.bitbunker.services;
 
 import java.util.List;
-import com.artcorb.bitbunker.dtos.CreateBuyAndSellTransactionsDto;
+import com.artcorb.bitbunker.dtos.CreateSwapTransactionsDto;
 import com.artcorb.bitbunker.dtos.CreateTransactionDto;
 import com.artcorb.bitbunker.dtos.TransactionDto;
 
 public interface TransactionService {
 
-  void createBuyAndSellTransactions(CreateBuyAndSellTransactionsDto dto);
+  List<TransactionDto> findAll();
 
-  void createTransactions(CreateTransactionDto dto);
+  TransactionDto createTransaction(CreateTransactionDto dto);
 
   void delete(long id);
 
-  List<TransactionDto> findAll();
+  List<TransactionDto> createSwapTransactions(CreateSwapTransactionsDto dto);
 
 }

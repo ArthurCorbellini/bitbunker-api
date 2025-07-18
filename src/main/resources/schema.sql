@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS `assets` (
 -- Regras:
 --   - Cada transação deve estar vinculada a um ativo, que por sua vez está vinculada a uma
 --     categoria, que por sua vez está vinculada a um usuário.
---   - O tipo de transação é restrito a: DEPOSIT, WITHDRAWAL, BUY ou SELL.
+--   - O tipo de transação é restrito a IN ou OUT.
 --   - Datas, quantidades e valores unitários são obrigatórios.
 -- Observações:
 --   - Permite armazenar anotações opcionais via campo `notes`.
@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS `transactions` (
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
   `asset_id` bigint NOT NULL,
-  `type` ENUM('DEPOSIT', 'WITHDRAWAL', 'BUY', 'SELL') NOT NULL,
+  `type` ENUM('IN', 'OUT') NOT NULL,
   `date_time` date NOT NULL,
   `quantity` decimal(20, 7) NOT NULL,
   `unit_price` decimal(20, 7) NOT NULL,
@@ -102,16 +102,3 @@ CREATE TABLE IF NOT EXISTS `transactions` (
   FOREIGN KEY (`asset_id`) REFERENCES `assets`(`id`)
 );
 --------------------------------------------
-
--- INSERT INTO `assets` (`ucid`, `name`, `symbol`, `type`, `tier`, `created_at`, `created_by`, `updated_at`, `updated_by`)  
--- VALUES 
---   (1, 'Bitcoin', 'BTC', 'CRYPTO', 'TIER_S', '2025-02-24', 'admin', NULL, NULL),
---   (2, 'Solana', 'SOL', 'CRYPTO', 'TIER_A', '2025-02-24', 'admin', NULL, NULL),
---   (3, 'Ethereum', 'ETH', 'CRYPTO', 'TIER_A', '2025-02-24', 'admin', NULL, NULL),
---   (null, 'Real', 'BRL', 'FIAT', 'NO_TIER', '2025-02-24', 'admin', NULL, NULL);
-
--- INSERT INTO `transactions` (`asset_id`, `type`, `amount`, `unit_price`, `total_value`, `date_time`, `notes`, `created_at`, `created_by`, `updated_at`, `updated_by`)
--- VALUES 
---   (1, 'BUY', 0.0050000, 150000.0000000, 150000.0000000, '2025-02-24', 'Compra de Bitcoin', '2025-02-24', 'admin', NULL, NULL),
---   (1, 'SELL', 0.0020000, 100000.0000000, 150000.0000000, '2025-02-24', NULL, '2025-02-24', 'admin', NULL, NULL),
---   (3, 'DEPOSIT', 5000, 5000, 150000.0000000, '2025-02-24', NULL, '2025-02-24', 'admin', NULL, NULL);

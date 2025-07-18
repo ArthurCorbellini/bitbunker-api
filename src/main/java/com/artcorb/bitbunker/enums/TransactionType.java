@@ -8,10 +8,8 @@ import lombok.Getter;
 public enum TransactionType {
 
   // @formatter:off
-  DEPOSIT("Deposit"),
-  WITHDRAWAL("Withdrawal"),
-  BUY("Buy"),
-  SELL("Sell");
+  IN("Transaction in"),
+  OUT("Transaction out");
   // @formatter:on
 
   private String label;
