@@ -29,7 +29,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @Validated
 @RestController
-@RequestMapping(path = "/transaction", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(path = "/transactions", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class TransactionController {
 
   private final MyResponseBuilder mrb;

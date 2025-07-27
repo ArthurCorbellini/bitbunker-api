@@ -28,7 +28,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @Validated
 @RestController
-@RequestMapping(path = "/asset-category", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(path = "/asset-categories", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class AssetCategoryController {
 
   private final MyResponseBuilder mrb;
