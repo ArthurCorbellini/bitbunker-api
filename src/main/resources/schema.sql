@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `asset_categories` (
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
   `name` varchar(30) NOT NULL,
-  `recommended_percentage` decimal(5, 2) NOT NULL
+  `recommended_percentage` decimal(5, 4) NOT NULL
   -- `owner_id` bigint NOT NULL,
 
   -- FOREIGN KEY (`owner_id`) REFERENCES `users`(`id`)
