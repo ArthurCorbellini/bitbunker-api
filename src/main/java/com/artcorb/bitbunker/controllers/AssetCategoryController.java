@@ -7,11 +7,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.artcorb.bitbunker.common.MyResponseBuilder;
-import com.artcorb.bitbunker.dtos.CreateAssetCategoryDto;
+import com.artcorb.bitbunker.dtos.AssetCategoryFormDto;
 import com.artcorb.bitbunker.dtos.ResponseDto;
 import com.artcorb.bitbunker.services.AssetCategoryService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,7 +35,7 @@ public class AssetCategoryController {
   private final MyResponseBuilder mrb;
   private final AssetCategoryService assetCategoryService;
 
-  @Operation(summary = "Fetch All Asset Categories",
+  @Operation(summary = "Get All Asset Categories",
       description = "Retrieves a list of all registered asset categories")
   @ApiResponses({
       @ApiResponse(responseCode = "200",
@@ -43,8 +44,8 @@ public class AssetCategoryController {
       @ApiResponse(responseCode = "500", description = "Internal server error",
           content = @Content(schema = @Schema(implementation = ResponseDto.class)))})
   @GetMapping
-  public ResponseEntity<ResponseDto> fetchAllAssetCategories() {
-    return mrb.ok(assetCategoryService.fetchAll());
+  public ResponseEntity<ResponseDto> getAllAssetCategories() {
+    return mrb.ok(assetCategoryService.getAll());
   }
 
   @Operation(summary = "Create Asset Category",
@@ -58,8 +59,26 @@ public class AssetCategoryController {
           content = @Content(schema = @Schema(implementation = ResponseDto.class)))})
   @PostMapping
   public ResponseEntity<ResponseDto> createAssetCategory(
-      @Valid @RequestBody CreateAssetCategoryDto dto) {
+      @Valid @RequestBody AssetCategoryFormDto dto) {
     return mrb.created(assetCategoryService.create(dto));
+  }
+
+  @Operation(summary = "Update Asset Category",
+      description = "Updates an existing asset category identified by its ID with the given data")
+  @ApiResponses({
+      @ApiResponse(responseCode = "200", description = "Asset category updated successfully",
+          content = @Content(schema = @Schema(implementation = ResponseDto.class))),
+      @ApiResponse(responseCode = "400", description = "Invalid input data (validation errors)",
+          content = @Content(schema = @Schema(implementation = ResponseDto.class))),
+      @ApiResponse(responseCode = "404", description = "Asset category not found",
+          content = @Content(schema = @Schema(implementation = ResponseDto.class))),
+      @ApiResponse(responseCode = "500", description = "Internal server error",
+          content = @Content(schema = @Schema(implementation = ResponseDto.class)))})
+  @PutMapping("/{id}")
+  public ResponseEntity<ResponseDto> updateAssetCategory(
+      @PathVariable @Positive(message = "ID must be a positive number") long id,
+      @Valid @RequestBody AssetCategoryFormDto dto) {
+    return mrb.ok(assetCategoryService.update(id, dto));
   }
 
   @Operation(summary = "Delete Asset Category", description = "Deletes an asset category by its ID")

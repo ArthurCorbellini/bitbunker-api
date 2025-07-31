@@ -3,12 +3,12 @@ package com.artcorb.bitbunker.mappers;
 import java.util.List;
 import java.util.stream.Collectors;
 import com.artcorb.bitbunker.dtos.AssetCategoryDto;
-import com.artcorb.bitbunker.dtos.CreateAssetCategoryDto;
+import com.artcorb.bitbunker.dtos.AssetCategoryFormDto;
 import com.artcorb.bitbunker.models.AssetCategory;
 
 public class AssetCategoryMapper {
 
-  public static AssetCategory toEntity(CreateAssetCategoryDto source) {
+  public static AssetCategory toEntity(AssetCategoryFormDto source) {
     AssetCategory target = new AssetCategory();
     target.setName(source.getName());
     target.setRecommendedPercentage(source.getRecommendedPercentage());

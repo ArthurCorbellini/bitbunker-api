@@ -7,9 +7,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-@Schema(name = "CreateAsset", description = "Schema to create Asset")
+@Schema(name = "AssetCategoryFormDto", description = "Schema to create/update Asset Categories")
 @Data
-public class CreateAssetCategoryDto {
+public class AssetCategoryFormDto {
 
   @Schema(description = "Asset category name", example = "Altcoin A")
   @NotEmpty(message = "Name cannot be null or empty")
